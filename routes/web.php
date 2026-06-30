@@ -12,6 +12,11 @@ Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 's
 Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register']);
 Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
+// Region API routes (used for dynamic dropdowns)
+Route::get('/api/regencies/{province_id}', [App\Http\Controllers\RegionController::class, 'getRegencies']);
+Route::get('/api/districts/{regency_id}', [App\Http\Controllers\RegionController::class, 'getDistricts']);
+
+
 // =====================
 // ADMIN ROUTES
 // =====================

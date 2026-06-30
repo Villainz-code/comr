@@ -48,12 +48,35 @@ class OrderController extends Controller
             return back()->with('error', 'Stok tidak mencukupi. Stok tersedia: ' . $product->stock);
         }
 
+        $shippingMethod = $request->input('shipping_method', 'regular');
+        $shippingCost = ($shippingMethod === 'express') ? 25000 : 15000;
+        $totalPrice = ($product->price * $request->quantity) + $shippingCost;
+
+        $user = auth()->user();
+        $cityName = '';
+        if ($user->regency && $user->district) {
+            $cityName = $user->regency->name . ', ' . $user->district->name;
+        } elseif ($user->regency) {
+            $cityName = $user->regency->name;
+        }
+
         Order::create([
-            'user_id' => auth()->id(),
+            'user_id' => $user->id,
             'product_id' => $product->id,
             'quantity' => $request->quantity,
-            'total_price' => $product->price * $request->quantity,
+            'selected_size' => $request->input('selected_size'),
+            'total_price' => $totalPrice,
             'shipping_address' => $request->shipping_address,
+            'recipient_name' => $request->input('recipient_name', $user->name),
+            'phone' => $request->input('phone', $user->phone),
+            'email' => $request->input('email', $user->email),
+            'city' => $cityName,
+            'country' => $request->input('country', 'Indonesia'),
+            'shipping_method' => $shippingMethod,
+            'shipping_cost' => $shippingCost,
+            'payment_method' => $request->input('payment_method'),
+            'payment_channel' => $request->input('payment_channel'),
+            'shipping_note' => $request->input('shipping_note'),
             'status' => 'pending',
         ]);
 

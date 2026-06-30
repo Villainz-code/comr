@@ -152,7 +152,7 @@
                     </div>
                     <span class="font-bold tracking-widest uppercase text-sm">COMR Mini</span>
                 </div>
-                <p class="text-gray-500 text-xs">© {{ date('Y') }} COMR Mini. Proyek UAS Pemrograman Web.</p>
+                <p class="text-gray-500 text-xs">© {{ date('Y') }} COMR Mini. Est 2026.</p>
             </div>
         </div>
     </footer>

@@ -14,6 +14,9 @@ class User extends Authenticatable
         'role',
         'phone',
         'address',
+        'province_id',
+        'regency_id',
+        'district_id',
     ];
 
     protected $hidden = [
@@ -40,5 +43,20 @@ class User extends Authenticatable
     public function isCustomer(): bool
     {
         return $this->role === 'customer';
+    }
+
+    public function province()
+    {
+        return $this->belongsTo(Province::class, 'province_id', 'id');
+    }
+
+    public function regency()
+    {
+        return $this->belongsTo(Regency::class, 'regency_id', 'id');
+    }
+
+    public function district()
+    {
+        return $this->belongsTo(District::class, 'district_id', 'id');
     }
 }

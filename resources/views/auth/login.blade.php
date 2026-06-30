@@ -78,14 +78,7 @@
             </div>
         </div>
 
-        {{-- Demo credentials --}}
-        <div class="mt-4 bg-gray-900/50 border border-gray-800 rounded-lg p-4">
-            <p class="text-gray-400 text-xs font-medium mb-2">🔑 Demo Credentials:</p>
-            <div class="space-y-1">
-                <p class="text-gray-500 text-xs">Admin: <span class="text-gray-300">admin@comr.com</span> / <span class="text-gray-300">password</span></p>
-                <p class="text-gray-500 text-xs">Customer: <span class="text-gray-300">budi@customer.com</span> / <span class="text-gray-300">password</span></p>
-            </div>
-        </div>
+
     </div>
 </div>
 @endsection

@@ -69,6 +69,59 @@
                     >
                 </div>
 
+                {{-- Provinsi --}}
+                <div class="mb-5">
+                    <label for="province_id" class="block text-sm font-medium text-gray-300 mb-2">Provinsi</label>
+                    <select
+                        id="province_id"
+                        name="province_id"
+                        class="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-600 text-sm focus:outline-none focus:border-gray-400 transition-colors @error('province_id') border-red-500 @enderror"
+                        required
+                    >
+                        <option value="" disabled selected>Pilih Provinsi</option>
+                        @foreach($provinces as $province)
+                            <option value="{{ $province->id }}" {{ old('province_id') == $province->id ? 'selected' : '' }}>{{ $province->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('province_id')
+                        <p class="text-red-400 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                {{-- Kota/Kabupaten --}}
+                <div class="mb-5">
+                    <label for="regency_id" class="block text-sm font-medium text-gray-300 mb-2">Kota/Kabupaten</label>
+                    <select
+                        id="regency_id"
+                        name="regency_id"
+                        class="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-600 text-sm focus:outline-none focus:border-gray-400 transition-colors disabled:opacity-50 @error('regency_id') border-red-500 @enderror"
+                        required
+                        disabled
+                    >
+                        <option value="" disabled selected>Pilih Kota/Kabupaten</option>
+                    </select>
+                    @error('regency_id')
+                        <p class="text-red-400 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                {{-- Kecamatan --}}
+                <div class="mb-5">
+                    <label for="district_id" class="block text-sm font-medium text-gray-300 mb-2">Kecamatan</label>
+                    <select
+                        id="district_id"
+                        name="district_id"
+                        class="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-600 text-sm focus:outline-none focus:border-gray-400 transition-colors disabled:opacity-50 @error('district_id') border-red-500 @enderror"
+                        required
+                        disabled
+                    >
+                        <option value="" disabled selected>Pilih Kecamatan</option>
+                    </select>
+                    @error('district_id')
+                        <p class="text-red-400 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
                 {{-- Address --}}
                 <div class="mb-5">
                     <label for="address" class="block text-sm font-medium text-gray-300 mb-2">Alamat <span class="text-gray-600">(opsional)</span></label>
@@ -126,4 +179,79 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const provinceSelect = document.getElementById('province_id');
+        const regencySelect = document.getElementById('regency_id');
+        const districtSelect = document.getElementById('district_id');
+
+        // Pre-fill values if available (from old input during validation error)
+        const oldRegencyId = "{{ old('regency_id') }}";
+        const oldDistrictId = "{{ old('district_id') }}";
+
+        function loadRegencies(provinceId, selectedRegencyId = null) {
+            regencySelect.innerHTML = '<option value="" disabled selected>Memuat Kota/Kabupaten...</option>';
+            regencySelect.disabled = true;
+            districtSelect.innerHTML = '<option value="" disabled selected>Pilih Kecamatan</option>';
+            districtSelect.disabled = true;
+
+            if (!provinceId) return;
+
+            fetch(`/api/regencies/${provinceId}`)
+                .then(res => res.json())
+                .then(data => {
+                    regencySelect.innerHTML = '<option value="" disabled selected>Pilih Kota/Kabupaten</option>';
+                    data.forEach(regency => {
+                        const option = document.createElement('option');
+                        option.value = regency.id;
+                        option.textContent = regency.name;
+                        if (selectedRegencyId == regency.id) option.selected = true;
+                        regencySelect.appendChild(option);
+                    });
+                    regencySelect.disabled = false;
+
+                    if (selectedRegencyId) {
+                        loadDistricts(selectedRegencyId, oldDistrictId);
+                    }
+                })
+                .catch(err => console.error('Error fetching regencies:', err));
+        }
+
+        function loadDistricts(regencyId, selectedDistrictId = null) {
+            districtSelect.innerHTML = '<option value="" disabled selected>Memuat Kecamatan...</option>';
+            districtSelect.disabled = true;
+
+            if (!regencyId) return;
+
+            fetch(`/api/districts/${regencyId}`)
+                .then(res => res.json())
+                .then(data => {
+                    districtSelect.innerHTML = '<option value="" disabled selected>Pilih Kecamatan</option>';
+                    data.forEach(district => {
+                        const option = document.createElement('option');
+                        option.value = district.id;
+                        option.textContent = district.name;
+                        if (selectedDistrictId == district.id) option.selected = true;
+                        districtSelect.appendChild(option);
+                    });
+                    districtSelect.disabled = false;
+                })
+                .catch(err => console.error('Error fetching districts:', err));
+        }
+
+        provinceSelect.addEventListener('change', function () {
+            loadRegencies(this.value);
+        });
+
+        regencySelect.addEventListener('change', function () {
+            loadDistricts(this.value);
+        });
+
+        // Initialize if province is already selected
+        if (provinceSelect.value) {
+            loadRegencies(provinceSelect.value, oldRegencyId);
+        }
+    });
+</script>
 @endsection
