@@ -8,13 +8,11 @@
         {{-- Logo --}}
         <div class="text-center mb-8">
             <div class="inline-flex items-center space-x-2 mb-4">
-                <div class="w-10 h-10 bg-white rounded-sm flex items-center justify-center">
-                    <span class="text-black font-black text-sm">CM</span>
-                </div>
-                <span class="font-bold text-xl tracking-widest uppercase">COMR Mini</span>
+                <img src="{{ asset('images/logo.jpg') }}" alt="Sinestesia.co Logo" class="w-10 h-10 object-cover rounded-sm bg-white">
+                <span class="font-bold text-xl tracking-widest uppercase">Sinestesia.co</span>
             </div>
             <h1 class="text-2xl font-bold">Buat Akun Baru</h1>
-            <p class="text-gray-400 mt-1 text-sm">Bergabung dengan COMR Mini</p>
+            <p class="text-gray-400 mt-1 text-sm">Bergabung dengan Sinestesia.co</p>
         </div>
 
         {{-- Form --}}

@@ -30,6 +30,8 @@
                     <span class="bg-yellow-900/50 text-yellow-300 text-xs px-3 py-1 rounded-full font-medium">⏳ Pending</span>
                 @elseif($order->status === 'processed')
                     <span class="bg-blue-900/50 text-blue-300 text-xs px-3 py-1 rounded-full font-medium">🔄 Diproses</span>
+                @elseif($order->status === 'cancelled')
+                    <span class="bg-red-900/50 text-red-300 text-xs px-3 py-1 rounded-full font-medium">✕ Dibatalkan</span>
                 @else
                     <span class="bg-green-900/50 text-green-300 text-xs px-3 py-1 rounded-full font-medium">✓ Selesai</span>
                 @endif
@@ -48,11 +50,26 @@
                 </div>
                 <div class="flex-1 min-w-0">
                     <p class="font-semibold text-sm">{{ $order->product->name }}</p>
-                    <p class="text-gray-500 text-xs mt-0.5">Jumlah: {{ $order->quantity }} item</p>
+                    <p class="text-gray-500 text-xs mt-0.5">Jumlah: {{ $order->quantity }} item @if($order->selected_size) | Ukuran: {{ $order->selected_size }} @endif</p>
                     <p class="text-gray-500 text-xs mt-0.5 truncate">Pengiriman: {{ Str::limit($order->shipping_address, 50) }}</p>
                 </div>
                 <div class="text-right flex-shrink-0">
-                    <p class="font-bold text-lg">Rp {{ number_format($order->total_price, 0, ',', '.') }}</p>
+                    <p class="font-bold text-lg mb-2">Rp {{ number_format($order->total_price, 0, ',', '.') }}</p>
+                    
+                    @if($order->status === 'pending')
+                    <div class="flex items-center justify-end space-x-2">
+                        <a href="{{ route('user.order.edit', $order) }}" class="inline-flex items-center bg-gray-800 text-gray-300 hover:text-white px-3 py-1.5 rounded text-xs transition-colors border border-gray-700">
+                            Edit
+                        </a>
+                        <form action="{{ route('user.order.cancel', $order) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin membatalkan pesanan ini?');">
+                            @csrf
+                            @method('PUT')
+                            <button type="submit" class="inline-flex items-center bg-red-900/30 text-red-400 hover:text-red-300 hover:bg-red-900/50 px-3 py-1.5 rounded text-xs transition-colors border border-red-900/50">
+                                Batalkan
+                            </button>
+                        </form>
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -72,7 +89,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
         </svg>
         <p class="font-medium text-lg text-gray-400">Belum ada pesanan</p>
-        <p class="text-sm mt-2">Yuk mulai belanja di COMR Mini!</p>
+        <p class="text-sm mt-2">Yuk mulai belanja di Sinestesia.co!</p>
         <a href="{{ route('user.shop') }}" class="inline-block mt-6 bg-white text-black font-semibold px-6 py-3 rounded-lg text-sm hover:bg-gray-200 transition-all">
             Mulai Belanja
         </a>

@@ -7,7 +7,7 @@
 
     {{-- Header --}}
     <div class="mb-8">
-        <h1 class="text-3xl font-black">COMR Shop</h1>
+        <h1 class="text-3xl font-black">Sinestesia.co Shop</h1>
         <p class="text-gray-400 mt-1">Temukan koleksi terbaik untuk Anda</p>
     </div>
 
@@ -78,7 +78,7 @@
                 <a href="{{ route('user.shop.show', $product) }}" class="block hover:opacity-80 transition-opacity">
                     <h2 class="font-semibold text-sm mb-1 leading-snug">{{ $product->name }}</h2>
                 </a>
-                <p class="text-gray-500 text-xs mb-3 line-clamp-2">{{ $product->description ?: 'Produk premium COMR Mini.' }}</p>
+                <p class="text-gray-500 text-xs mb-3 line-clamp-2">{{ $product->description ?: 'Produk premium Sinestesia.co.' }}</p>
 
                 {{-- Sizes badge --}}
                 @if($product->sizes && count($product->sizes) > 0)

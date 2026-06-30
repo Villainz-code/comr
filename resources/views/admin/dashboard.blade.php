@@ -2,7 +2,7 @@
 
 @section('title', 'Dashboard')
 @section('page-title', 'Dashboard')
-@section('page-subtitle', 'Ringkasan data toko COMR Mini')
+@section('page-subtitle', 'Ringkasan data toko Sinestesia.co')
 
 @section('content')
 
