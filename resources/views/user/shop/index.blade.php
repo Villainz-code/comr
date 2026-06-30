@@ -22,7 +22,7 @@
             </div>
 
             {{-- Category Filter --}}
-            <select name="category"
+            <select name="category" onchange="this.form.submit()"
                 class="bg-black border border-gray-700 rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:border-gray-400 transition-colors">
                 <option value="">Semua Kategori</option>
                 @foreach($categories as $cat)
@@ -32,14 +32,9 @@
                 @endforeach
             </select>
 
-            <button type="submit"
-                class="bg-white text-black font-semibold px-6 py-2.5 rounded-lg text-sm hover:bg-gray-200 transition-all">
-                Filter
-            </button>
-
             @if(request()->hasAny(['search', 'category']))
                 <a href="{{ route('user.shop') }}"
-                   class="text-gray-400 hover:text-white border border-gray-700 px-4 py-2.5 rounded-lg text-sm transition-all text-center">
+                   class="text-gray-400 hover:text-white border border-gray-700 px-4 py-2.5 rounded-lg text-sm transition-all text-center flex items-center justify-center">
                     Reset
                 </a>
             @endif
