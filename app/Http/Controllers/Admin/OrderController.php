@@ -20,7 +20,8 @@ class OrderController extends Controller
     public function updateStatus(Request $request, $id)
     {
         $request->validate([
-            'status' => 'required|in:pending,processed,completed,cancelled'
+            'status' => 'required|in:pending,processed,shipped,completed,cancelled',
+            'estimated_arrival' => 'nullable|string|max:255'
         ]);
 
         $order = Order::findOrFail($id);
@@ -28,7 +29,8 @@ class OrderController extends Controller
         $newStatus = $request->status;
 
         $order->update([
-            'status' => $newStatus
+            'status' => $newStatus,
+            'estimated_arrival' => $request->estimated_arrival
         ]);
 
         // If cancelled by admin, and it wasn't cancelled before, restore stock

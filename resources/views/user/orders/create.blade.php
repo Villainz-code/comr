@@ -750,10 +750,10 @@
         right: 18px;
         top: 50%;
         transform: translateY(-50%);
-        width: 20px;
-        height: 20px;
+        width: 22px;
+        height: 22px;
         border-radius: 50%;
-        border: 2px solid #3a3a3a;
+        border: 2px solid #6b7280;
         transition: all 0.2s ease;
         display: flex;
         align-items: center;
@@ -771,23 +771,25 @@
     }
 
     .selected > .radio-dot,
-    .radio-card.selected .radio-dot {
+    .radio-card.selected .radio-dot,
+    .payment-option.selected .radio-dot {
         border-color: #ffffff;
     }
 
     .selected > .radio-dot::after,
-    .radio-card.selected .radio-dot::after {
-        width: 10px;
-        height: 10px;
+    .radio-card.selected .radio-dot::after,
+    .payment-option.selected .radio-dot::after {
+        width: 12px;
+        height: 12px;
     }
 
     /* ========== RADIO DOT SMALL (Sub-Options) ========== */
     .radio-dot-sm {
-        width: 18px;
-        height: 18px;
-        min-width: 18px;
+        width: 20px;
+        height: 20px;
+        min-width: 20px;
         border-radius: 50%;
-        border: 2px solid #3a3a3a;
+        border: 2px solid #6b7280;
         transition: all 0.2s ease;
         display: flex;
         align-items: center;
@@ -810,8 +812,8 @@
     }
 
     .sub-option.selected .radio-dot-sm::after {
-        width: 8px;
-        height: 8px;
+        width: 10px;
+        height: 10px;
     }
 
     /* ========== PAYMENT SECTION ========== */
@@ -1388,6 +1390,46 @@
             padding: 12px 8px;
             gap: 10px;
         }
+    /* ========== WHITE SELECTED STATES ========== */
+    .radio-card.selected,
+    .payment-option.selected,
+    .sub-option.selected {
+        background: #ffffff !important;
+        border-color: #ffffff !important;
+    }
+
+    .radio-card.selected .radio-card-title,
+    .payment-option.selected .payment-name,
+    .sub-option.selected .sub-option-name {
+        color: #000000 !important;
+    }
+
+    .radio-card.selected .radio-card-desc,
+    .radio-card.selected .radio-card-icon,
+    .payment-option.selected .payment-selected-channel,
+    .payment-option.selected .payment-chevron,
+    .sub-option.selected .sub-option-desc {
+        color: #4b5563 !important;
+    }
+
+    .radio-card.selected .radio-card-price {
+        color: #ea580c !important; /* Tailwind orange-600 */
+        font-weight: 800;
+    }
+
+    /* Update the radio dots to contrast with the white background */
+    .selected > .radio-dot,
+    .radio-card.selected .radio-dot,
+    .payment-option.selected .radio-dot,
+    .sub-option.selected .radio-dot-sm {
+        border-color: #000000 !important;
+    }
+
+    .selected > .radio-dot::after,
+    .radio-card.selected .radio-dot::after,
+    .payment-option.selected .radio-dot::after,
+    .sub-option.selected .radio-dot-sm::after {
+        background: #000000 !important;
     }
 </style>
 

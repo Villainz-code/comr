@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class OrderController extends Controller
 {
@@ -13,7 +14,7 @@ class OrderController extends Controller
     {
         $query = Order::where('user_id', auth()->id())->with('product')->latest();
 
-        if ($request->has('status') && in_array($request->status, ['pending', 'processed', 'completed', 'cancelled'])) {
+        if ($request->has('status') && in_array($request->status, ['pending', 'processed', 'shipped', 'completed', 'cancelled'])) {
             $query->where('status', $request->status);
         }
 
@@ -80,7 +81,12 @@ class OrderController extends Controller
         } elseif ($user->regency) {
             $cityName = $user->regency->name;
         }
-        Order::create([
+        
+        $channelPrefix = strtoupper($request->input('payment_channel', 'INV'));
+        $paymentCode = $channelPrefix . date('ymd') . strtoupper(Str::random(4));
+        $paymentDeadline = now()->addHours(24);
+
+        $order = Order::create([
             'user_id' => $user->id,
             'product_id' => $product->id,
             'quantity' => $request->quantity,
@@ -97,14 +103,25 @@ class OrderController extends Controller
             'payment_method' => $request->input('payment_method'),
             'payment_channel' => $request->input('payment_channel'),
             'shipping_note' => $request->input('shipping_note'),
+            'payment_code' => $paymentCode,
+            'payment_deadline' => $paymentDeadline,
             'status' => 'pending',
         ]);
 
         // Kurangi stok
         $product->decrement('stock', $request->quantity);
 
-        return redirect()->route('user.orders')
-            ->with('success', 'Pesanan berhasil dibuat! Pesanan Anda sedang menunggu konfirmasi.');
+        return redirect()->route('user.orders.payment', $order)
+            ->with('success', 'Pesanan berhasil dibuat! Silakan selesaikan pembayaran Anda.');
+    }
+
+    public function payment(Order $order)
+    {
+        if ($order->user_id !== auth()->id() || $order->status !== 'pending') {
+            return redirect()->route('user.orders')->with('error', 'Halaman pembayaran tidak tersedia.');
+        }
+
+        return view('user.orders.payment', compact('order'));
     }
 
     public function edit(Order $order)
