@@ -153,6 +153,23 @@
         </div>
     </footer>
 
+    @auth
+        @if(auth()->user()->role === 'customer')
+            {{-- Floating Cart --}}
+            <a href="{{ route('user.cart') }}" class="fixed bottom-6 right-6 z-50 bg-white text-black p-4 rounded-full shadow-lg shadow-white/10 hover:scale-110 hover:-translate-y-1 transition-all duration-300 group">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/>
+                </svg>
+                @php
+                    $cartCount = \App\Models\Cart::where('user_id', auth()->id())->count();
+                @endphp
+                @if($cartCount > 0)
+                    <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold w-6 h-6 flex items-center justify-center rounded-full border-2 border-black">{{ $cartCount }}</span>
+                @endif
+            </a>
+        @endif
+    @endauth
+
     <script>
         // Mobile menu toggle
         document.getElementById('mobile-menu-btn')?.addEventListener('click', function() {

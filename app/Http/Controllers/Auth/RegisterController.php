@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\Password;
 
 class RegisterController extends Controller
@@ -32,6 +33,7 @@ class RegisterController extends Controller
             'regency_id' => ['required', 'exists:reg_regencies,id'],
             'district_id' => ['required', 'exists:reg_districts,id'],
             'address' => ['nullable', 'string', 'max:500'],
+            'photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'],
         ], [
             'name.required' => 'Nama wajib diisi.',
             'email.required' => 'Email wajib diisi.',
@@ -42,6 +44,9 @@ class RegisterController extends Controller
             'province_id.required' => 'Provinsi wajib dipilih.',
             'regency_id.required' => 'Kota/Kabupaten wajib dipilih.',
             'district_id.required' => 'Kecamatan wajib dipilih.',
+            'photo.image' => 'File harus berupa gambar.',
+            'photo.mimes' => 'Format gambar harus jpeg, png, jpg, atau webp.',
+            'photo.max' => 'Ukuran gambar maksimal 2MB.',
         ]);
 
         $user = User::create([
@@ -55,6 +60,12 @@ class RegisterController extends Controller
             'regency_id' => $request->regency_id,
             'district_id' => $request->district_id,
         ]);
+
+        // Handle photo upload
+        if ($request->hasFile('photo')) {
+            $path = $request->file('photo')->store('profile-photos', 'public');
+            $user->update(['photo' => $path]);
+        }
 
         Auth::login($user);
 

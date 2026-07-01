@@ -60,6 +60,11 @@ Route::prefix('user')->middleware(['auth', 'customer'])->group(function () {
     Route::get('/orders/{order}/edit', [App\Http\Controllers\User\OrderController::class, 'edit'])->name('user.order.edit');
     Route::put('/orders/{order}', [App\Http\Controllers\User\OrderController::class, 'update'])->name('user.order.update');
     Route::put('/orders/{order}/cancel', [App\Http\Controllers\User\OrderController::class, 'cancel'])->name('user.order.cancel');
+    Route::get('/cart', [App\Http\Controllers\User\CartController::class, 'index'])->name('user.cart');
+    Route::post('/cart/add', [App\Http\Controllers\User\CartController::class, 'add'])->name('user.cart.add');
+    Route::patch('/cart/{cart}', [App\Http\Controllers\User\CartController::class, 'update'])->name('user.cart.update');
+    Route::delete('/cart/{cart}', [App\Http\Controllers\User\CartController::class, 'remove'])->name('user.cart.remove');
+    Route::delete('/cart', [App\Http\Controllers\User\CartController::class, 'clear'])->name('user.cart.clear');
     Route::get('/profile', [App\Http\Controllers\User\ProfileController::class, 'edit'])->name('user.profile');
     Route::put('/profile', [App\Http\Controllers\User\ProfileController::class, 'update'])->name('user.profile.update');
     Route::delete('/profile/photo', [App\Http\Controllers\User\ProfileController::class, 'deletePhoto'])->name('user.profile.photo.delete');

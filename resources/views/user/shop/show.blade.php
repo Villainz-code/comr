@@ -119,6 +119,18 @@
                     </svg>
                     Pesan Sekarang
                 </a>
+                <form action="{{ route('user.cart.add') }}" method="POST" id="cart-form" class="flex-1 flex">
+                    @csrf
+                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                    <input type="hidden" name="quantity" value="1">
+                    <input type="hidden" name="selected_size" id="cart-selected-size" value="">
+                    <button type="submit" class="w-full inline-flex items-center justify-center bg-gray-800 text-white font-bold py-4 rounded-xl text-sm hover:bg-gray-700 transition-all hover:-translate-y-1 border border-gray-700 hover:border-gray-500">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/>
+                        </svg>
+                        + Keranjang
+                    </button>
+                </form>
                 @else
                 <button disabled class="flex-1 inline-flex items-center justify-center bg-gray-800 text-gray-500 font-bold py-4 rounded-xl text-sm cursor-not-allowed">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -279,6 +291,12 @@
         if (orderLink) {
             const baseUrl = "{{ route('user.order.create', $product) }}";
             orderLink.href = baseUrl + '?size=' + encodeURIComponent(selectedSize);
+        }
+        
+        // Update cart form size input
+        const cartSizeInput = document.getElementById('cart-selected-size');
+        if (cartSizeInput) {
+            cartSizeInput.value = selectedSize;
         }
 
         document.getElementById('size-hint').textContent = 'Ukuran dipilih: ' + selectedSize;

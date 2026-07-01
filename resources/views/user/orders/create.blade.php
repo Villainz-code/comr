@@ -387,7 +387,10 @@
                             <div class="product-details">
                                 <h3 class="product-name">{{ $product->name }}</h3>
                                 <p class="product-variant">{{ $product->category->name }}</p>
-                                <p class="product-quantity">Jumlah: <span id="display-qty">1</span></p>
+                                <p class="product-quantity">Jumlah: <span id="display-qty">{{ old('quantity', request('qty', 1)) }}</span></p>
+                                @if(request('size'))
+                                <p class="product-variant" style="color: #10b981;">Ukuran: {{ request('size') }}</p>
+                                @endif
                             </div>
                             <p class="product-price">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
                         </div>
@@ -416,7 +419,7 @@
                                         <path d="M5 12h14"/>
                                     </svg>
                                 </button>
-                                <input type="number" name="quantity" id="quantity" value="{{ old('quantity', 1) }}"
+                                <input type="number" name="quantity" id="quantity" value="{{ old('quantity', request('qty', 1)) }}"
                                     min="1" max="{{ $product->stock }}" class="qty-input" readonly>
                                 <button type="button" id="qty-plus" class="qty-btn">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -467,8 +470,8 @@
                         {{-- Price Breakdown --}}
                         <div class="price-breakdown">
                             <div class="price-row">
-                                <span class="price-label">Subtotal · <span id="summary-qty-text">1</span> barang</span>
-                                <span class="price-value" id="summary-subtotal">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+                                <span class="price-label">Subtotal · <span id="summary-qty-text">{{ old('quantity', request('qty', 1)) }}</span> barang</span>
+                                <span class="price-value" id="summary-subtotal">Rp {{ number_format($product->price * old('quantity', request('qty', 1)), 0, ',', '.') }}</span>
                             </div>
                             <div class="price-row">
                                 <span class="price-label">Diskon Produk</span>
@@ -483,7 +486,7 @@
                         {{-- Total --}}
                         <div class="total-section">
                             <span class="total-label">Total Pembayaran</span>
-                            <span class="total-value" id="summary-total">Rp {{ number_format($product->price + 15000, 0, ',', '.') }}</span>
+                            <span class="total-value" id="summary-total">Rp {{ number_format(($product->price * old('quantity', request('qty', 1))) + 15000, 0, ',', '.') }}</span>
                         </div>
 
                         {{-- Security Badge --}}
@@ -500,13 +503,21 @@
                             <p>Bea masuk atau pajak impor mungkin dikenakan tergantung negara tujuan pengiriman.</p>
                         </div>
 
-                        {{-- Submit Button --}}
-                        <button type="submit" id="order-submit-btn" class="order-button">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
-                            </svg>
-                            Order Sekarang
-                        </button>
+                        {{-- Submit Buttons --}}
+                        <div class="flex flex-col gap-3">
+                            <button type="submit" id="order-submit-btn" class="order-button">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                                </svg>
+                                Order Sekarang
+                            </button>
+                            <button type="submit" id="cart-submit-btn" formaction="{{ route('user.cart.add') }}" class="order-button" style="background: #1f2937; color: white; border: 1px solid #374151;">
+                                <svg width="18" height="18" class="mr-2 inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/>
+                                </svg>
+                                Masukkan Keranjang
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1641,6 +1652,10 @@
 
     // ========== FORM VALIDATION ==========
     document.getElementById('checkout-form').addEventListener('submit', function(e) {
+        if (e.submitter && e.submitter.id === 'cart-submit-btn') {
+            return true; // Lewati validasi untuk tombol masukkan keranjang
+        }
+
         const paymentSelected = document.querySelector('input[name="payment_method"]:checked');
         if (!paymentSelected) {
             e.preventDefault();

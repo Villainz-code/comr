@@ -17,8 +17,34 @@
 
         {{-- Form --}}
         <div class="bg-[#111] border border-gray-800 rounded-xl p-8">
-            <form method="POST" action="{{ route('register') }}" id="register-form">
+            <form method="POST" action="{{ route('register') }}" id="register-form" enctype="multipart/form-data">
                 @csrf
+
+                {{-- Profile Photo --}}
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-300 mb-3">Foto Profil <span class="text-gray-600">(opsional)</span></label>
+                    <div class="flex items-center gap-4">
+                        <div id="photo-preview-container">
+                            <div id="photo-preview-placeholder" class="w-20 h-20 bg-gray-800 rounded-full flex items-center justify-center border-2 border-dashed border-gray-600 cursor-pointer hover:border-gray-400 transition-colors" onclick="document.getElementById('photo').click()">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <input type="file" name="photo" id="photo" accept="image/jpeg,image/png,image/jpg,image/webp" class="hidden" onchange="previewRegPhoto(this)">
+                            <label for="photo" class="inline-flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-white text-sm px-4 py-2.5 rounded-lg cursor-pointer transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                Pilih Foto
+                            </label>
+                            <p class="text-gray-500 text-xs mt-2">JPG, PNG, atau WebP. Maks 2MB.</p>
+                            @error('photo') <p class="text-red-400 text-xs mt-1">{{ $message }}</p> @enderror
+                            <p id="photo-filename" class="text-green-400 text-xs mt-1 hidden"></p>
+                        </div>
+                    </div>
+                </div>
 
                 {{-- Name --}}
                 <div class="mb-5">
@@ -251,5 +277,21 @@
             loadRegencies(provinceSelect.value, oldRegencyId);
         }
     });
+
+    // Photo preview
+    window.previewRegPhoto = function(input) {
+        if (input.files && input.files[0]) {
+            const file = input.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const container = document.getElementById('photo-preview-container');
+                container.innerHTML = `<img src="${e.target.result}" alt="Preview" class="w-20 h-20 rounded-full object-cover border-2 border-green-500/50 cursor-pointer" onclick="document.getElementById('photo').click()">`;
+            };
+            reader.readAsDataURL(file);
+            const filenameEl = document.getElementById('photo-filename');
+            filenameEl.textContent = '✓ ' + file.name;
+            filenameEl.classList.remove('hidden');
+        }
+    };
 </script>
 @endsection

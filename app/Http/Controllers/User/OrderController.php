@@ -111,6 +111,12 @@ class OrderController extends Controller
         // Kurangi stok
         $product->decrement('stock', $request->quantity);
 
+        // Hapus dari keranjang jika produk ini ada di keranjang
+        \App\Models\Cart::where('user_id', $user->id)
+            ->where('product_id', $product->id)
+            ->where('selected_size', $request->input('selected_size'))
+            ->delete();
+
         return redirect()->route('user.orders.payment', $order)
             ->with('success', 'Pesanan berhasil dibuat! Silakan selesaikan pembayaran Anda.');
     }

@@ -30,9 +30,13 @@
                     <td class="px-6 py-4 text-gray-500">{{ $users->firstItem() + $i }}</td>
                     <td class="px-6 py-4">
                         <div class="flex items-center space-x-3">
-                            <div class="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center flex-shrink-0">
-                                <span class="text-xs font-semibold">{{ substr($user->name, 0, 1) }}</span>
-                            </div>
+                            @if($user->photo)
+                                <img src="{{ asset('storage/' . $user->photo) }}" alt="{{ $user->name }}" class="w-8 h-8 rounded-full object-cover flex-shrink-0">
+                            @else
+                                <div class="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <span class="text-xs font-semibold">{{ substr($user->name, 0, 1) }}</span>
+                                </div>
+                            @endif
                             <span class="font-medium">{{ $user->name }}</span>
                         </div>
                     </td>
