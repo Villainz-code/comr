@@ -41,6 +41,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
         'destroy' => 'admin.categories.destroy',
     ]);
     Route::get('/users', [App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.users');
+    Route::delete('/users/{user}', [App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('admin.users.destroy');
     Route::get('/orders', [App\Http\Controllers\Admin\OrderController::class, 'index'])->name('admin.orders');
     Route::put('/orders/{id}/status', [App\Http\Controllers\Admin\OrderController::class, 'updateStatus'])->name('admin.orders.update');
 });
@@ -55,6 +56,7 @@ Route::prefix('user')->middleware(['auth', 'customer'])->group(function () {
     Route::get('/order/create/{product}', [App\Http\Controllers\User\OrderController::class, 'create'])->name('user.order.create');
     Route::post('/order/store', [App\Http\Controllers\User\OrderController::class, 'store'])->name('user.order.store');
     Route::get('/orders', [App\Http\Controllers\User\OrderController::class, 'index'])->name('user.orders');
+    Route::get('/orders/{order}/payment', [App\Http\Controllers\User\OrderController::class, 'payment'])->name('user.orders.payment');
     Route::get('/orders/{order}/edit', [App\Http\Controllers\User\OrderController::class, 'edit'])->name('user.order.edit');
     Route::put('/orders/{order}', [App\Http\Controllers\User\OrderController::class, 'update'])->name('user.order.update');
     Route::put('/orders/{order}/cancel', [App\Http\Controllers\User\OrderController::class, 'cancel'])->name('user.order.cancel');

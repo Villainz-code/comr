@@ -23,8 +23,11 @@ class Order extends Model
         'shipping_cost',
         'payment_method',
         'payment_channel',
+        'payment_code',
+        'payment_deadline',
         'shipping_note',
         'status',
+        'estimated_arrival',
     ];
 
     protected function casts(): array
@@ -32,6 +35,7 @@ class Order extends Model
         return [
             'total_price' => 'decimal:2',
             'shipping_cost' => 'decimal:2',
+            'payment_deadline' => 'datetime',
         ];
     }
 

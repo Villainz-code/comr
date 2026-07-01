@@ -16,4 +16,15 @@ class UserController extends Controller
 
         return view('admin.users.index', compact('users'));
     }
+
+    public function destroy(User $user)
+    {
+        if ($user->role === 'admin') {
+            return back()->with('error', 'Tidak dapat menghapus admin.');
+        }
+
+        $user->delete();
+        
+        return back()->with('success', 'Customer berhasil dihapus.');
+    }
 }

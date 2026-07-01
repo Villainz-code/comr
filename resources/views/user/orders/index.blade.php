@@ -54,6 +54,8 @@
                     <span class="bg-yellow-900/50 text-yellow-300 text-xs px-3 py-1 rounded-full font-medium">⏳ Pending</span>
                 @elseif($order->status === 'processed')
                     <span class="bg-blue-900/50 text-blue-300 text-xs px-3 py-1 rounded-full font-medium">🔄 Diproses</span>
+                @elseif($order->status === 'shipped')
+                    <span class="bg-purple-900/50 text-purple-300 text-xs px-3 py-1 rounded-full font-medium">🚚 Dikirim</span>
                 @elseif($order->status === 'cancelled')
                     <span class="bg-red-900/50 text-red-300 text-xs px-3 py-1 rounded-full font-medium">✕ Dibatalkan</span>
                 @else
@@ -76,6 +78,9 @@
                     <p class="font-semibold text-sm">{{ $order->product->name }}</p>
                     <p class="text-gray-500 text-xs mt-0.5">Jumlah: {{ $order->quantity }} item @if($order->selected_size) | Ukuran: {{ $order->selected_size }} @endif</p>
                     <p class="text-gray-500 text-xs mt-0.5 truncate">Pengiriman: {{ Str::limit($order->shipping_address, 50) }}</p>
+                    @if($order->estimated_arrival)
+                        <p class="text-blue-400 text-xs mt-1 font-semibold">🚚 Estimasi Tiba: {{ $order->estimated_arrival }}</p>
+                    @endif
                 </div>
                 <div class="text-right flex-shrink-0">
                     <p class="font-bold text-lg mb-2">Rp {{ number_format($order->total_price, 0, ',', '.') }}</p>
