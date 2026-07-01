@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="COMR Mini Admin Panel - Kelola toko pakaian online Anda.">
-    <title>Admin | @yield('title', 'Dashboard') | COMR Mini</title>
+    <meta name="description" content="Sinestesia.co Admin Panel - Kelola toko pakaian online Anda.">
+    <title>Admin | @yield('title', 'Dashboard') | Sinestesia.co</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -55,11 +55,9 @@
     <aside class="w-64 bg-black border-r border-gray-800 flex flex-col flex-shrink-0 overflow-y-auto" id="sidebar">
         {{-- Logo --}}
         <div class="flex items-center space-x-3 p-6 border-b border-gray-800">
-            <div class="w-8 h-8 bg-white rounded-sm flex items-center justify-center flex-shrink-0">
-                <span class="text-black font-black text-xs">CM</span>
-            </div>
+            <img src="{{ asset('images/logo.jpg') }}" alt="Sinestesia.co Logo" class="w-8 h-8 object-cover rounded-sm bg-white">
             <div>
-                <p class="font-bold text-sm tracking-widest uppercase">COMR Mini</p>
+                <p class="font-bold text-sm tracking-widest uppercase">Sinestesia.co</p>
                 <p class="text-gray-500 text-xs">Admin Panel</p>
             </div>
         </div>

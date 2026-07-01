@@ -63,7 +63,7 @@
             {{-- Description --}}
             <div class="mb-6">
                 <h3 class="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-3">Deskripsi Produk</h3>
-                <p class="text-gray-400 text-sm leading-relaxed whitespace-pre-line">{{ $product->description ?: 'Produk premium dari COMR Mini. Kualitas terbaik dengan bahan pilihan.' }}</p>
+                <p class="text-gray-400 text-sm leading-relaxed whitespace-pre-line">{{ $product->description ?: 'Produk premium dari Sinestesia.co. Kualitas terbaik dengan bahan pilihan.' }}</p>
             </div>
 
             {{-- Sizes --}}

@@ -26,7 +26,7 @@
             </h1>
 
             <p class="text-gray-400 text-lg md:text-xl mb-10 max-w-xl leading-relaxed">
-                Koleksi pakaian premium COMR Mini. Dirancang untuk mereka yang menghargai gaya, kualitas, dan ekspresi diri.
+                Koleksi pakaian premium Sinestesia.co. Dirancang untuk mereka yang menghargai gaya, kualitas, dan ekspresi diri.
             </p>
 
             <div class="flex flex-col sm:flex-row gap-4">
@@ -187,7 +187,7 @@
         <div class="absolute inset-0 bg-gradient-to-b from-gray-900/20 to-transparent"></div>
         <div class="relative">
             <h2 class="text-4xl font-black mb-4">MULAI BELANJA SEKARANG</h2>
-            <p class="text-gray-400 mb-8 max-w-md mx-auto">Daftar gratis dan nikmati koleksi fashion premium COMR Mini.</p>
+            <p class="text-gray-400 mb-8 max-w-md mx-auto">Daftar gratis dan nikmati koleksi fashion premium Sinestesia.co.</p>
             <a href="{{ route('register') }}"
                class="inline-flex items-center bg-white text-black font-bold px-10 py-4 rounded-sm text-sm tracking-wider uppercase hover:bg-gray-200 transition-all hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-white/10">
                 Daftar Gratis →

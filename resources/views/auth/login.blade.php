@@ -8,10 +8,8 @@
         {{-- Logo --}}
         <div class="text-center mb-8">
             <div class="inline-flex items-center space-x-2 mb-4">
-                <div class="w-10 h-10 bg-white rounded-sm flex items-center justify-center">
-                    <span class="text-black font-black text-sm">CM</span>
-                </div>
-                <span class="font-bold text-xl tracking-widest uppercase">COMR Mini</span>
+                <img src="{{ asset('images/logo.jpg') }}" alt="Sinestesia.co Logo" class="w-10 h-10 object-cover rounded-sm bg-white">
+                <span class="font-bold text-xl tracking-widest uppercase">Sinestesia.co</span>
             </div>
             <h1 class="text-2xl font-bold">Selamat Datang Kembali</h1>
             <p class="text-gray-400 mt-1 text-sm">Masuk ke akun Anda</p>
@@ -30,7 +28,7 @@
                         id="email"
                         name="email"
                         value="{{ old('email') }}"
-                        placeholder="admin@comr.com"
+                        placeholder="admin@sinestesia.co"
                         class="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-600 text-sm focus:outline-none focus:border-gray-400 focus:ring-1 focus:ring-gray-400 transition-colors @error('email') border-red-500 @enderror"
                         autocomplete="email"
                         required
@@ -82,7 +80,7 @@
         <div class="mt-4 bg-gray-900/50 border border-gray-800 rounded-lg p-4">
             <p class="text-gray-400 text-xs font-medium mb-2">🔑 Demo Credentials:</p>
             <div class="space-y-1">
-                <p class="text-gray-500 text-xs">Admin: <span class="text-gray-300">admin@comr.com</span> / <span class="text-gray-300">password</span></p>
+                <p class="text-gray-500 text-xs">Admin: <span class="text-gray-300">admin@sinestesia.co</span> / <span class="text-gray-300">password</span></p>
                 <p class="text-gray-500 text-xs">Customer: <span class="text-gray-300">budi@customer.com</span> / <span class="text-gray-300">password</span></p>
             </div>
         </div>

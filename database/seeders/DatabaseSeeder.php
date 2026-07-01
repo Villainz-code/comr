@@ -16,8 +16,8 @@ class DatabaseSeeder extends Seeder
     {
         // Admin user
         User::create([
-            'name' => 'Admin COMR',
-            'email' => 'admin@comr.com',
+            'name' => 'Admin Sinestesia.co',
+            'email' => 'admin@sinestesia.co',
             'password' => Hash::make('password'),
             'role' => 'admin',
             'phone' => '081200000000',
@@ -62,23 +62,23 @@ class DatabaseSeeder extends Seeder
         $products = [
             [
                 'category_id' => $categoryModels[0]->id,
-                'name' => 'COMR Classic Black Tee',
-                'description' => 'T-shirt hitam klasik dengan logo COMR, bahan cotton combed 30s, adem dan nyaman.',
+                'name' => 'Sinestesia.co Classic Black Tee',
+                'description' => 'T-shirt hitam klasik dengan logo Sinestesia.co, bahan cotton combed 30s, adem dan nyaman.',
                 'price' => 185000,
                 'stock' => 50,
                 'status' => 'active',
             ],
             [
                 'category_id' => $categoryModels[0]->id,
-                'name' => 'COMR Graphic White Tee',
-                'description' => 'T-shirt putih dengan grafis eksklusif COMR. Bahan premium soft cotton.',
+                'name' => 'Sinestesia.co Graphic White Tee',
+                'description' => 'T-shirt putih dengan grafis eksklusif Sinestesia.co. Bahan premium soft cotton.',
                 'price' => 210000,
                 'stock' => 35,
                 'status' => 'active',
             ],
             [
                 'category_id' => $categoryModels[1]->id,
-                'name' => 'COMR Essential Hoodie Black',
+                'name' => 'Sinestesia.co Essential Hoodie Black',
                 'description' => 'Hoodie hitam esensial dengan bahan fleece tebal, cocok untuk cuaca dingin.',
                 'price' => 425000,
                 'stock' => 20,
@@ -86,7 +86,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'category_id' => $categoryModels[1]->id,
-                'name' => 'COMR Oversized Hoodie Grey',
+                'name' => 'Sinestesia.co Oversized Hoodie Grey',
                 'description' => 'Hoodie oversized abu-abu dengan cut yang relaxed fit dan nyaman dipakai seharian.',
                 'price' => 480000,
                 'stock' => 15,
@@ -94,15 +94,15 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'category_id' => $categoryModels[2]->id,
-                'name' => 'COMR Varsity Jacket',
-                'description' => 'Jaket varsity dengan detail bordir COMR, bahan canvas berkualitas tinggi.',
+                'name' => 'Sinestesia.co Varsity Jacket',
+                'description' => 'Jaket varsity dengan detail bordir Sinestesia.co, bahan canvas berkualitas tinggi.',
                 'price' => 750000,
                 'stock' => 10,
                 'status' => 'active',
             ],
             [
                 'category_id' => $categoryModels[2]->id,
-                'name' => 'COMR Bomber Jacket',
+                'name' => 'Sinestesia.co Bomber Jacket',
                 'description' => 'Bomber jacket minimalist dengan bahan nylon water-resistant.',
                 'price' => 680000,
                 'stock' => 8,
@@ -110,7 +110,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'category_id' => $categoryModels[3]->id,
-                'name' => 'COMR Cargo Pants Black',
+                'name' => 'Sinestesia.co Cargo Pants Black',
                 'description' => 'Celana cargo hitam dengan banyak kantong fungsional, bahan ripstop.',
                 'price' => 395000,
                 'stock' => 25,
@@ -118,7 +118,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'category_id' => $categoryModels[3]->id,
-                'name' => 'COMR Jogger Pants',
+                'name' => 'Sinestesia.co Jogger Pants',
                 'description' => 'Jogger pants kasual dengan bahan cotton fleece, nyaman untuk aktivitas sehari-hari.',
                 'price' => 285000,
                 'stock' => 30,
@@ -126,16 +126,16 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'category_id' => $categoryModels[4]->id,
-                'name' => 'COMR Cap Black',
-                'description' => 'Topi baseball hitam dengan logo COMR bordir, adjustable strap.',
+                'name' => 'Sinestesia.co Cap Black',
+                'description' => 'Topi baseball hitam dengan logo Sinestesia.co bordir, adjustable strap.',
                 'price' => 125000,
                 'stock' => 60,
                 'status' => 'active',
             ],
             [
                 'category_id' => $categoryModels[4]->id,
-                'name' => 'COMR Tote Bag',
-                'description' => 'Tote bag canvas premium dengan logo COMR, kapasitas besar dan tahan lama.',
+                'name' => 'Sinestesia.co Tote Bag',
+                'description' => 'Tote bag canvas premium dengan logo Sinestesia.co, kapasitas besar dan tahan lama.',
                 'price' => 95000,
                 'stock' => 45,
                 'status' => 'active',

@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="COMR Mini - Toko Pakaian Online Premium. Temukan koleksi fashion terbaik dengan gaya modern.">
-    <title>@yield('title', 'COMR Mini') | COMR Mini</title>
+    <meta name="description" content="Sinestesia.co - Toko Pakaian Online Premium. Temukan koleksi fashion terbaik dengan gaya modern.">
+    <title>@yield('title', 'Sinestesia.co') | Sinestesia.co</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -66,10 +66,8 @@
             <div class="flex justify-between items-center h-16">
                 {{-- Logo --}}
                 <a href="{{ route('home') }}" class="flex items-center space-x-2 group">
-                    <div class="w-8 h-8 bg-white rounded-sm flex items-center justify-center">
-                        <span class="text-black font-black text-xs">CM</span>
-                    </div>
-                    <span class="font-bold text-lg tracking-widest uppercase">COMR Mini</span>
+                    <img src="{{ asset('images/logo.jpg') }}" alt="Sinestesia.co Logo" class="w-8 h-8 object-cover rounded-sm bg-white">
+                    <span class="font-bold text-lg tracking-widest uppercase">Sinestesia.co</span>
                 </a>
 
                 {{-- Desktop Menu --}}
@@ -147,12 +145,10 @@
         <div class="max-w-7xl mx-auto px-4 py-10">
             <div class="flex flex-col md:flex-row justify-between items-center gap-4">
                 <div class="flex items-center space-x-2">
-                    <div class="w-6 h-6 bg-white rounded-sm flex items-center justify-center">
-                        <span class="text-black font-black text-xs">CM</span>
-                    </div>
-                    <span class="font-bold tracking-widest uppercase text-sm">COMR Mini</span>
+                    <img src="{{ asset('images/logo.jpg') }}" alt="Sinestesia.co Logo" class="w-6 h-6 object-cover rounded-sm bg-white">
+                    <span class="font-bold tracking-widest uppercase text-sm">Sinestesia.co</span>
                 </div>
-                <p class="text-gray-500 text-xs">© {{ date('Y') }} COMR Mini. Proyek UAS Pemrograman Web.</p>
+                <p class="text-gray-500 text-xs">© {{ date('Y') }} Sinestesia.co. Proyek UAS Pemrograman Web.</p>
             </div>
         </div>
     </footer>

@@ -89,7 +89,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
         </svg>
         <p class="font-medium text-lg text-gray-400">Belum ada pesanan</p>
-        <p class="text-sm mt-2">Yuk mulai belanja di COMR Mini!</p>
+        <p class="text-sm mt-2">Yuk mulai belanja di Sinestesia.co!</p>
         <a href="{{ route('user.shop') }}" class="inline-block mt-6 bg-white text-black font-semibold px-6 py-3 rounded-lg text-sm hover:bg-gray-200 transition-all">
             Mulai Belanja
         </a>

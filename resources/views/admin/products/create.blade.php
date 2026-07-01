@@ -16,7 +16,7 @@
                 <div class="md:col-span-2">
                     <label class="block text-sm font-medium text-gray-300 mb-2">Nama Produk <span class="text-red-400">*</span></label>
                     <input type="text" name="name" value="{{ old('name') }}"
-                        placeholder="Contoh: COMR Classic Black Tee"
+                        placeholder="Contoh: Sinestesia.co Classic Black Tee"
                         class="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-gray-400 transition-colors @error('name') border-red-500 @enderror">
                     @error('name') <p class="text-red-400 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
