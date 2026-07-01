@@ -138,6 +138,45 @@ function previewImage(input) {
         reader.readAsDataURL(input.files[0]);
     }
 }
+
+// ALL SIZE toggle logic
+document.addEventListener('DOMContentLoaded', function() {
+    const allCheckboxes = document.querySelectorAll('input[name="sizes[]"]');
+    const individualSizes = ['S', 'M', 'L', 'XL', 'XXL'];
+    let allSizeCheckbox = null;
+    let sizeCheckboxes = [];
+
+    allCheckboxes.forEach(cb => {
+        if (cb.value === 'ALL SIZE') {
+            allSizeCheckbox = cb;
+        } else if (individualSizes.includes(cb.value)) {
+            sizeCheckboxes.push(cb);
+        }
+    });
+
+    if (allSizeCheckbox) {
+        allSizeCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                sizeCheckboxes.forEach(cb => cb.checked = true);
+            } else {
+                sizeCheckboxes.forEach(cb => cb.checked = false);
+            }
+        });
+
+        sizeCheckboxes.forEach(cb => {
+            cb.addEventListener('change', function() {
+                const allChecked = sizeCheckboxes.every(c => c.checked);
+                allSizeCheckbox.checked = allChecked;
+            });
+        });
+        
+        // Initial check on load for edit form
+        const allChecked = sizeCheckboxes.every(c => c.checked) && sizeCheckboxes.length > 0;
+        if (allChecked) {
+            allSizeCheckbox.checked = true;
+        }
+    }
+});
 </script>
 
 @endsection

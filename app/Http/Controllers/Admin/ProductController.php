@@ -53,6 +53,11 @@ class ProductController extends Controller
             $slug = $slug . '-' . ($slugCount + 1);
         }
 
+        $sizes = $request->sizes ?? [];
+        if (in_array('ALL SIZE', $sizes)) {
+            $sizes = ['S', 'M', 'L', 'XL', 'XXL'];
+        }
+
         Product::create([
             'name' => $request->name,
             'slug' => $slug,
@@ -62,7 +67,7 @@ class ProductController extends Controller
             'stock' => $request->stock,
             'status' => $request->status,
             'image' => $imagePath,
-            'sizes' => $request->sizes ?? [],
+            'sizes' => $sizes,
         ]);
 
         return redirect()->route('admin.products.index')->with('success', 'Produk berhasil ditambahkan!');
@@ -93,6 +98,11 @@ class ProductController extends Controller
             'sizes.*' => ['string'],
         ]);
 
+        $sizes = $request->sizes ?? [];
+        if (in_array('ALL SIZE', $sizes)) {
+            $sizes = ['S', 'M', 'L', 'XL', 'XXL'];
+        }
+
         $data = [
             'name' => $request->name,
             'category_id' => $request->category_id,
@@ -100,7 +110,7 @@ class ProductController extends Controller
             'price' => $request->price,
             'stock' => $request->stock,
             'status' => $request->status,
-            'sizes' => $request->sizes ?? [],
+            'sizes' => $sizes,
         ];
 
         if ($request->hasFile('image')) {

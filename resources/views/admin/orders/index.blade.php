@@ -7,8 +7,32 @@
 @section('content')
 
 <div class="bg-[#111] border border-gray-800 rounded-xl overflow-hidden">
-    <div class="px-6 py-4 border-b border-gray-800 flex items-center justify-between">
-        <p class="text-gray-400 text-sm">{{ $orders->total() }} pesanan total</p>
+    <div class="px-6 py-4 border-b border-gray-800">
+        <div class="flex items-center justify-between mb-3">
+            <p class="text-gray-400 text-sm">{{ $orders->total() }} pesanan {{ request('status') ? '(' . ucfirst(request('status') === 'processed' ? 'Diproses' : (request('status') === 'completed' ? 'Selesai' : (request('status') === 'cancelled' ? 'Dibatalkan' : 'Pending'))) . ')' : 'total' }}</p>
+        </div>
+        <div class="flex items-center gap-2 flex-wrap">
+            <a href="{{ route('admin.orders') }}"
+               class="text-xs px-3 py-1.5 rounded-full border transition-all {{ !request('status') ? 'bg-white text-black border-white font-semibold' : 'text-gray-400 border-gray-700 hover:border-gray-500 hover:text-white' }}">
+                Semua
+            </a>
+            <a href="{{ route('admin.orders', ['status' => 'pending']) }}"
+               class="text-xs px-3 py-1.5 rounded-full border transition-all {{ request('status') === 'pending' ? 'bg-yellow-900/50 text-yellow-300 border-yellow-700 font-semibold' : 'text-gray-400 border-gray-700 hover:border-yellow-800 hover:text-yellow-400' }}">
+                Pending
+            </a>
+            <a href="{{ route('admin.orders', ['status' => 'processed']) }}"
+               class="text-xs px-3 py-1.5 rounded-full border transition-all {{ request('status') === 'processed' ? 'bg-blue-900/50 text-blue-300 border-blue-700 font-semibold' : 'text-gray-400 border-gray-700 hover:border-blue-800 hover:text-blue-400' }}">
+                Diproses
+            </a>
+            <a href="{{ route('admin.orders', ['status' => 'completed']) }}"
+               class="text-xs px-3 py-1.5 rounded-full border transition-all {{ request('status') === 'completed' ? 'bg-green-900/50 text-green-300 border-green-700 font-semibold' : 'text-gray-400 border-gray-700 hover:border-green-800 hover:text-green-400' }}">
+                Selesai
+            </a>
+            <a href="{{ route('admin.orders', ['status' => 'cancelled']) }}"
+               class="text-xs px-3 py-1.5 rounded-full border transition-all {{ request('status') === 'cancelled' ? 'bg-red-900/50 text-red-300 border-red-700 font-semibold' : 'text-gray-400 border-gray-700 hover:border-red-800 hover:text-red-400' }}">
+                Dibatalkan
+            </a>
+        </div>
     </div>
     <div class="overflow-x-auto">
         <table class="w-full text-sm">

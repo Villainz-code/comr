@@ -8,11 +8,15 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $orders = Order::with(['user', 'product'])
-            ->latest()
-            ->paginate(10);
+        $query = Order::with(['user', 'product'])->latest();
+
+        if ($request->has('status') && in_array($request->status, ['pending', 'processed', 'completed', 'cancelled'])) {
+            $query->where('status', $request->status);
+        }
+
+        $orders = $query->paginate(10)->appends($request->query());
 
         return view('admin.orders.index', compact('orders'));
     }

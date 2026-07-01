@@ -71,7 +71,7 @@
 
 {{-- Order Status Summary --}}
 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-    <div class="bg-yellow-900/20 border border-yellow-800/40 rounded-xl p-5 flex items-center justify-between">
+    <a href="{{ route('admin.orders', ['status' => 'pending']) }}" class="bg-yellow-900/20 border border-yellow-800/40 rounded-xl p-5 flex items-center justify-between hover:border-yellow-600/60 hover:bg-yellow-900/30 transition-all cursor-pointer">
         <div>
             <p class="text-yellow-400 text-xs uppercase tracking-wider font-semibold mb-1">Pending</p>
             <p class="text-3xl font-black text-yellow-300">{{ $stats['pending_orders'] }}</p>
@@ -81,8 +81,8 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
         </div>
-    </div>
-    <div class="bg-blue-900/20 border border-blue-800/40 rounded-xl p-5 flex items-center justify-between">
+    </a>
+    <a href="{{ route('admin.orders', ['status' => 'processed']) }}" class="bg-blue-900/20 border border-blue-800/40 rounded-xl p-5 flex items-center justify-between hover:border-blue-600/60 hover:bg-blue-900/30 transition-all cursor-pointer">
         <div>
             <p class="text-blue-400 text-xs uppercase tracking-wider font-semibold mb-1">Diproses</p>
             <p class="text-3xl font-black text-blue-300">{{ $stats['total_orders'] - $stats['pending_orders'] - $stats['completed_orders'] }}</p>
@@ -92,8 +92,8 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
             </svg>
         </div>
-    </div>
-    <div class="bg-green-900/20 border border-green-800/40 rounded-xl p-5 flex items-center justify-between">
+    </a>
+    <a href="{{ route('admin.orders', ['status' => 'completed']) }}" class="bg-green-900/20 border border-green-800/40 rounded-xl p-5 flex items-center justify-between hover:border-green-600/60 hover:bg-green-900/30 transition-all cursor-pointer">
         <div>
             <p class="text-green-400 text-xs uppercase tracking-wider font-semibold mb-1">Selesai</p>
             <p class="text-3xl font-black text-green-300">{{ $stats['completed_orders'] }}</p>
@@ -103,7 +103,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
         </div>
-    </div>
+    </a>
 </div>
 
 {{-- Recent Orders --}}
