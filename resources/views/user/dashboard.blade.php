@@ -23,7 +23,7 @@
     </div>
 
     {{-- Stats --}}
-    <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
+    <div class="grid grid-cols-2 md:grid-cols-6 gap-4 mb-10">
         <a href="{{ route('user.orders') }}" class="block bg-[#111] border border-gray-800 rounded-xl p-5 text-center hover:border-gray-600 transition-all">
             <p class="text-3xl font-black">{{ $stats['total_orders'] }}</p>
             <p class="text-gray-500 text-xs uppercase tracking-wider mt-1">Total Pesanan</p>
@@ -43,6 +43,10 @@
         <a href="{{ route('user.orders', ['status' => 'completed']) }}" class="block bg-green-900/20 border border-green-800/40 rounded-xl p-5 text-center hover:border-green-600/40 transition-all">
             <p class="text-3xl font-black text-green-300">{{ $stats['completed_orders'] }}</p>
             <p class="text-green-500/70 text-xs uppercase tracking-wider mt-1">Selesai</p>
+        </a>
+        <a href="{{ route('user.orders', ['status' => 'cancelled']) }}" class="block bg-red-900/20 border border-red-800/40 rounded-xl p-5 text-center hover:border-red-600/40 transition-all">
+            <p class="text-3xl font-black text-red-300">{{ $stats['cancelled_orders'] }}</p>
+            <p class="text-red-500/70 text-xs uppercase tracking-wider mt-1">Dibatalkan</p>
         </a>
     </div>
 

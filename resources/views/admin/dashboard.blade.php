@@ -129,7 +129,7 @@
 @endif
 
 {{-- Order Status Summary --}}
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
     <a href="{{ route('admin.orders', ['status' => 'pending']) }}" class="bg-yellow-900/20 border border-yellow-800/40 rounded-xl p-5 flex items-center justify-between hover:border-yellow-600/60 hover:bg-yellow-900/30 transition-all cursor-pointer">
         <div>
             <p class="text-yellow-400 text-xs uppercase tracking-wider font-semibold mb-1">Pending</p>
@@ -172,6 +172,17 @@
         <div class="w-10 h-10 bg-green-900/50 rounded-full flex items-center justify-center">
             <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+        </div>
+    </a>
+    <a href="{{ route('admin.orders', ['status' => 'cancelled']) }}" class="bg-red-900/20 border border-red-800/40 rounded-xl p-5 flex items-center justify-between hover:border-red-600/60 hover:bg-red-900/30 transition-all cursor-pointer">
+        <div>
+            <p class="text-red-400 text-xs uppercase tracking-wider font-semibold mb-1">Dibatalkan</p>
+            <p class="text-3xl font-black text-red-300">{{ $stats['cancelled_orders'] }}</p>
+        </div>
+        <div class="w-10 h-10 bg-red-900/50 rounded-full flex items-center justify-center">
+            <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
             </svg>
         </div>
     </a>
