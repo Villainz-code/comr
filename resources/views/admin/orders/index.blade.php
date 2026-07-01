@@ -9,7 +9,7 @@
 <div class="bg-[#111] border border-gray-800 rounded-xl overflow-hidden">
     <div class="px-6 py-4 border-b border-gray-800">
         <div class="flex items-center justify-between mb-3">
-            <p class="text-gray-400 text-sm">{{ $orders->total() }} pesanan {{ request('status') ? '(' . ucfirst(request('status') === 'processed' ? 'Diproses' : (request('status') === 'completed' ? 'Selesai' : (request('status') === 'cancelled' ? 'Dibatalkan' : 'Pending'))) . ')' : 'total' }}</p>
+            <p class="text-gray-400 text-sm">{{ $orders->total() }} pesanan {{ request('status') ? '(' . ucfirst(request('status') === 'processed' ? 'Diproses' : (request('status') === 'shipped' ? 'Dikirim' : (request('status') === 'completed' ? 'Selesai' : (request('status') === 'cancelled' ? 'Dibatalkan' : 'Pending')))) . ')' : 'total' }}</p>
         </div>
         <div class="flex items-center gap-2 flex-wrap">
             <a href="{{ route('admin.orders') }}"
@@ -23,6 +23,10 @@
             <a href="{{ route('admin.orders', ['status' => 'processed']) }}"
                class="text-xs px-3 py-1.5 rounded-full border transition-all {{ request('status') === 'processed' ? 'bg-blue-900/50 text-blue-300 border-blue-700 font-semibold' : 'text-gray-400 border-gray-700 hover:border-blue-800 hover:text-blue-400' }}">
                 Diproses
+            </a>
+            <a href="{{ route('admin.orders', ['status' => 'shipped']) }}"
+               class="text-xs px-3 py-1.5 rounded-full border transition-all {{ request('status') === 'shipped' ? 'bg-purple-900/50 text-purple-300 border-purple-700 font-semibold' : 'text-gray-400 border-gray-700 hover:border-purple-800 hover:text-purple-400' }}">
+                Dikirim
             </a>
             <a href="{{ route('admin.orders', ['status' => 'completed']) }}"
                class="text-xs px-3 py-1.5 rounded-full border transition-all {{ request('status') === 'completed' ? 'bg-green-900/50 text-green-300 border-green-700 font-semibold' : 'text-gray-400 border-gray-700 hover:border-green-800 hover:text-green-400' }}">

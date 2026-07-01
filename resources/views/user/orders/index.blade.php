@@ -8,7 +8,7 @@
     <div class="flex items-center justify-between mb-6">
         <div>
             <h1 class="text-2xl font-bold">Riwayat Pesanan</h1>
-            <p class="text-gray-400 text-sm mt-1">{{ request('status') ? ucfirst(request('status') === 'processed' ? 'Diproses' : (request('status') === 'completed' ? 'Selesai' : (request('status') === 'cancelled' ? 'Dibatalkan' : 'Pending'))) : 'Semua pesanan Anda' }}</p>
+            <p class="text-gray-400 text-sm mt-1">{{ request('status') ? ucfirst(request('status') === 'processed' ? 'Diproses' : (request('status') === 'shipped' ? 'Dikirim' : (request('status') === 'completed' ? 'Selesai' : (request('status') === 'cancelled' ? 'Dibatalkan' : 'Pending')))) : 'Semua pesanan Anda' }}</p>
         </div>
         <a href="{{ route('user.shop') }}"
            class="inline-flex items-center bg-white text-black font-semibold px-5 py-2.5 rounded-lg text-sm hover:bg-gray-200 transition-all hover:-translate-y-0.5">
@@ -29,6 +29,10 @@
         <a href="{{ route('user.orders', ['status' => 'processed']) }}"
            class="text-xs px-3 py-1.5 rounded-full border transition-all {{ request('status') === 'processed' ? 'bg-blue-900/50 text-blue-300 border-blue-700 font-semibold' : 'text-gray-400 border-gray-700 hover:border-blue-800 hover:text-blue-400' }}">
             Diproses
+        </a>
+        <a href="{{ route('user.orders', ['status' => 'shipped']) }}"
+           class="text-xs px-3 py-1.5 rounded-full border transition-all {{ request('status') === 'shipped' ? 'bg-purple-900/50 text-purple-300 border-purple-700 font-semibold' : 'text-gray-400 border-gray-700 hover:border-purple-800 hover:text-purple-400' }}">
+            Dikirim
         </a>
         <a href="{{ route('user.orders', ['status' => 'completed']) }}"
            class="text-xs px-3 py-1.5 rounded-full border transition-all {{ request('status') === 'completed' ? 'bg-green-900/50 text-green-300 border-green-700 font-semibold' : 'text-gray-400 border-gray-700 hover:border-green-800 hover:text-green-400' }}">

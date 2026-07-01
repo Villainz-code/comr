@@ -12,7 +12,7 @@ class OrderController extends Controller
     {
         $query = Order::with(['user', 'product'])->latest();
 
-        if ($request->has('status') && in_array($request->status, ['pending', 'processed', 'completed', 'cancelled'])) {
+        if ($request->has('status') && in_array($request->status, ['pending', 'processed', 'shipped', 'completed', 'cancelled'])) {
             $query->where('status', $request->status);
         }
 

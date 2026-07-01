@@ -23,7 +23,7 @@
     </div>
 
     {{-- Stats --}}
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
         <a href="{{ route('user.orders') }}" class="block bg-[#111] border border-gray-800 rounded-xl p-5 text-center hover:border-gray-600 transition-all">
             <p class="text-3xl font-black">{{ $stats['total_orders'] }}</p>
             <p class="text-gray-500 text-xs uppercase tracking-wider mt-1">Total Pesanan</p>
@@ -34,7 +34,11 @@
         </a>
         <a href="{{ route('user.orders', ['status' => 'processed']) }}" class="block bg-blue-900/20 border border-blue-800/40 rounded-xl p-5 text-center hover:border-blue-600/40 transition-all">
             <p class="text-3xl font-black text-blue-300">{{ $stats['processed_orders'] }}</p>
-            <p class="text-blue-500/70 text-xs uppercase tracking-wider mt-1">Diproses / Dikirim</p>
+            <p class="text-blue-500/70 text-xs uppercase tracking-wider mt-1">Diproses</p>
+        </a>
+        <a href="{{ route('user.orders', ['status' => 'shipped']) }}" class="block bg-purple-900/20 border border-purple-800/40 rounded-xl p-5 text-center hover:border-purple-600/40 transition-all">
+            <p class="text-3xl font-black text-purple-300">{{ $stats['shipped_orders'] }}</p>
+            <p class="text-purple-500/70 text-xs uppercase tracking-wider mt-1">Dikirim</p>
         </a>
         <a href="{{ route('user.orders', ['status' => 'completed']) }}" class="block bg-green-900/20 border border-green-800/40 rounded-xl p-5 text-center hover:border-green-600/40 transition-all">
             <p class="text-3xl font-black text-green-300">{{ $stats['completed_orders'] }}</p>
