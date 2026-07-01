@@ -17,6 +17,7 @@ class DashboardController extends Controller
             'processed_orders' => Order::where('user_id', $user->id)->where('status', 'processed')->count(),
             'shipped_orders' => Order::where('user_id', $user->id)->where('status', 'shipped')->count(),
             'completed_orders' => Order::where('user_id', $user->id)->where('status', 'completed')->count(),
+            'cancelled_orders' => Order::where('user_id', $user->id)->where('status', 'cancelled')->count(),
         ];
 
         $recentOrders = Order::where('user_id', $user->id)
