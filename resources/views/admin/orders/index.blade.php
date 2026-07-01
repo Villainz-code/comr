@@ -45,10 +45,16 @@
                             <span class="bg-yellow-900/50 text-yellow-300 text-xs px-2.5 py-1 rounded-full font-medium">Pending</span>
                         @elseif($order->status === 'processed')
                             <span class="bg-blue-900/50 text-blue-300 text-xs px-2.5 py-1 rounded-full font-medium">Diproses</span>
+                        @elseif($order->status === 'shipped')
+                            <span class="bg-purple-900/50 text-purple-300 text-xs px-2.5 py-1 rounded-full font-medium">🚚 Dikirim</span>
                         @elseif($order->status === 'cancelled')
                             <span class="bg-red-900/50 text-red-300 text-xs px-2.5 py-1 rounded-full font-medium">Dibatalkan</span>
                         @else
                             <span class="bg-green-900/50 text-green-300 text-xs px-2.5 py-1 rounded-full font-medium">Selesai</span>
+                        @endif
+
+                        @if($order->estimated_arrival)
+                            <div class="text-xs text-blue-400 mt-1.5 font-medium">🚚 {{ $order->estimated_arrival }}</div>
                         @endif
                     </td>
                     <td class="px-6 py-4">
@@ -59,8 +65,20 @@
                                 class="bg-black border border-gray-700 rounded px-2 py-1.5 text-white text-xs focus:outline-none focus:border-gray-400">
                                 <option value="pending" {{ $order->status === 'pending' ? 'selected' : '' }}>Pending</option>
                                 <option value="processed" {{ $order->status === 'processed' ? 'selected' : '' }}>Diproses</option>
+                                <option value="shipped" {{ $order->status === 'shipped' ? 'selected' : '' }}>Dikirim</option>
                                 <option value="completed" {{ $order->status === 'completed' ? 'selected' : '' }}>Selesai</option>
                                 <option value="cancelled" {{ $order->status === 'cancelled' ? 'selected' : '' }}>Dibatalkan</option>
+                            </select>
+                            <select name="estimated_arrival"
+                                class="bg-black border border-gray-700 rounded px-2 py-1.5 text-white text-xs focus:outline-none focus:border-gray-400 w-32">
+                                <option value="" {{ is_null($order->estimated_arrival) || $order->estimated_arrival === '' ? 'selected' : '' }}>Pilih Estimasi Tiba</option>
+                                <option value="Paket sedang menuju rumah" {{ $order->estimated_arrival === 'Paket sedang menuju rumah' ? 'selected' : '' }}>Paket sedang menuju rumah</option>
+                                <option value="1-2 Hari Kerja" {{ $order->estimated_arrival === '1-2 Hari Kerja' ? 'selected' : '' }}>1-2 Hari Kerja</option>
+                                <option value="2-3 Hari Kerja" {{ $order->estimated_arrival === '2-3 Hari Kerja' ? 'selected' : '' }}>2-3 Hari Kerja</option>
+                                <option value="3-5 Hari Kerja" {{ $order->estimated_arrival === '3-5 Hari Kerja' ? 'selected' : '' }}>3-5 Hari Kerja</option>
+                                <option value="5-7 Hari Kerja" {{ $order->estimated_arrival === '5-7 Hari Kerja' ? 'selected' : '' }}>5-7 Hari Kerja</option>
+                                <option value="1-2 Minggu" {{ $order->estimated_arrival === '1-2 Minggu' ? 'selected' : '' }}>1-2 Minggu</option>
+                                <option value="2-4 Minggu" {{ $order->estimated_arrival === '2-4 Minggu' ? 'selected' : '' }}>2-4 Minggu</option>
                             </select>
                             <button type="submit"
                                 class="bg-white text-black text-xs font-semibold px-3 py-1.5 rounded hover:bg-gray-200 transition-all">

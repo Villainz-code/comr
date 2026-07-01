@@ -30,7 +30,7 @@
         </a>
         <a href="{{ route('user.orders', ['status' => 'processed']) }}" class="block bg-blue-900/20 border border-blue-800/40 rounded-xl p-5 text-center hover:border-blue-600/40 transition-all">
             <p class="text-3xl font-black text-blue-300">{{ $stats['processed_orders'] }}</p>
-            <p class="text-blue-500/70 text-xs uppercase tracking-wider mt-1">Diproses</p>
+            <p class="text-blue-500/70 text-xs uppercase tracking-wider mt-1">Diproses / Dikirim</p>
         </a>
         <a href="{{ route('user.orders', ['status' => 'completed']) }}" class="block bg-green-900/20 border border-green-800/40 rounded-xl p-5 text-center hover:border-green-600/40 transition-all">
             <p class="text-3xl font-black text-green-300">{{ $stats['completed_orders'] }}</p>
@@ -102,15 +102,22 @@
                     <div class="min-w-0">
                         <p class="font-medium text-sm truncate">{{ $order->product->name }}</p>
                         <p class="text-gray-500 text-xs">{{ $order->quantity }} item · Rp {{ number_format($order->total_price, 0, ',', '.') }}</p>
+                        @if($order->estimated_arrival)
+                            <p class="text-blue-400 text-[10px] mt-0.5 font-medium">🚚 Estimasi Tiba: {{ $order->estimated_arrival }}</p>
+                        @endif
                     </div>
                 </div>
                 <div class="flex-shrink-0 ml-4">
                     @if($order->status === 'pending')
-                        <span class="bg-yellow-900/50 text-yellow-300 text-xs px-2.5 py-1 rounded-full">Pending</span>
+                        <span class="bg-yellow-900/50 text-yellow-300 text-xs px-2.5 py-1 rounded-full font-medium">Pending</span>
                     @elseif($order->status === 'processed')
-                        <span class="bg-blue-900/50 text-blue-300 text-xs px-2.5 py-1 rounded-full">Diproses</span>
+                        <span class="bg-blue-900/50 text-blue-300 text-xs px-2.5 py-1 rounded-full font-medium">Diproses</span>
+                    @elseif($order->status === 'shipped')
+                        <span class="bg-purple-900/50 text-purple-300 text-xs px-2.5 py-1 rounded-full font-medium">Dikirim</span>
+                    @elseif($order->status === 'cancelled')
+                        <span class="bg-red-900/50 text-red-300 text-xs px-2.5 py-1 rounded-full font-medium">Batal</span>
                     @else
-                        <span class="bg-green-900/50 text-green-300 text-xs px-2.5 py-1 rounded-full">Selesai</span>
+                        <span class="bg-green-900/50 text-green-300 text-xs px-2.5 py-1 rounded-full font-medium">Selesai</span>
                     @endif
                 </div>
             </div>
