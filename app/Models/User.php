@@ -14,6 +14,7 @@ class User extends Authenticatable
         'role',
         'phone',
         'address',
+        'photo',
         'province_id',
         'regency_id',
         'district_id',

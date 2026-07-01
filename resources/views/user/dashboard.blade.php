@@ -8,9 +8,13 @@
     {{-- Welcome Header --}}
     <div class="mb-8">
         <div class="flex items-center space-x-4 mb-2">
-            <div class="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center text-lg font-bold">
-                {{ substr(auth()->user()->name, 0, 1) }}
-            </div>
+            @if(auth()->user()->photo)
+                <img src="{{ asset('storage/' . auth()->user()->photo) }}" alt="Foto Profil" class="w-12 h-12 rounded-full object-cover">
+            @else
+                <div class="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center text-lg font-bold">
+                    {{ substr(auth()->user()->name, 0, 1) }}
+                </div>
+            @endif
             <div>
                 <p class="text-gray-400 text-sm">Selamat datang kembali 👋</p>
                 <h1 class="text-2xl font-bold">{{ auth()->user()->name }}</h1>
