@@ -69,7 +69,6 @@
                     <span class="text-sm font-semibold">{{ substr(auth()->user()->name, 0, 1) }}</span>
                 </div>
                 <div class="min-w-0">
-                    <p class="text-sm font-medium truncate">{{ auth()->user()->name }}</p>
                     <span class="inline-block bg-gray-700 text-gray-300 text-xs px-2 py-0.5 rounded-full">Admin</span>
                 </div>
             </div>
