@@ -21,7 +21,7 @@
             {{-- Total Pembayaran --}}
             <div class="flex justify-between items-center border-b border-[#2a2a2a] pb-4">
                 <span class="text-gray-400 text-sm font-medium">Total Pembayaran</span>
-                <span class="text-white font-bold text-lg">Rp{{ number_format($order->total_price, 0, ',', '.') }}</span>
+                <span class="text-white font-bold text-lg">Rp{{ number_format($totalPrice, 0, ',', '.') }}</span>
             </div>
 
             {{-- Deadline --}}
@@ -85,7 +85,7 @@
                     </div>
                     <div class="flex space-x-3">
                         <div class="w-6 h-6 rounded-full bg-[#2a2a2a] text-white flex items-center justify-center text-xs font-bold shrink-0">3</div>
-                        <p class="pt-0.5">Pastikan nominal transfer tepat sebesar <span class="font-bold text-white">Rp{{ number_format($order->total_price, 0, ',', '.') }}</span>.</p>
+                        <p class="pt-0.5">Pastikan nominal transfer tepat sebesar <span class="font-bold text-white">Rp{{ number_format($totalPrice, 0, ',', '.') }}</span>.</p>
                     </div>
                     <div class="flex space-x-3">
                         <div class="w-6 h-6 rounded-full bg-[#2a2a2a] text-white flex items-center justify-center text-xs font-bold shrink-0">4</div>
