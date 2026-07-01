@@ -518,6 +518,11 @@
                                 Masukkan Keranjang
                             </button>
                         </div>
+                        
+                        {{-- Logo / Branding di Kolom Kanan --}}
+                        <div class="mt-12 mb-4 flex justify-center items-center opacity-40 hover:opacity-100 transition-opacity duration-300">
+                            <img src="{{ asset('images/logo.jpg') }}" alt="Logo" class="w-24 h-24 object-contain rounded-xl invert">
+                        </div>
                     </div>
                 </div>
             </div>
