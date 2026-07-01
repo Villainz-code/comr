@@ -129,13 +129,8 @@
 @endif
 
 {{-- Order Status Summary --}}
-<<<<<<< HEAD
-<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-    <a href="{{ route('admin.orders', ['status' => 'pending']) }}" class="bg-yellow-900/20 border border-yellow-800/40 rounded-xl p-5 flex items-center justify-between hover:border-yellow-600/60 hover:bg-yellow-900/30 transition-all cursor-pointer">
-=======
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-    <div class="bg-yellow-900/20 border border-yellow-800/40 rounded-xl p-5 flex items-center justify-between">
->>>>>>> 747d56584af4015fb1fccf43d20fa516b5d1c921
+    <a href="{{ route('admin.orders', ['status' => 'pending']) }}" class="bg-yellow-900/20 border border-yellow-800/40 rounded-xl p-5 flex items-center justify-between hover:border-yellow-600/60 hover:bg-yellow-900/30 transition-all cursor-pointer">
         <div>
             <p class="text-yellow-400 text-xs uppercase tracking-wider font-semibold mb-1">Pending</p>
             <p class="text-3xl font-black text-yellow-300">{{ $stats['pending_orders'] }}</p>
@@ -156,12 +151,8 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
             </svg>
         </div>
-<<<<<<< HEAD
     </a>
-    <a href="{{ route('admin.orders', ['status' => 'completed']) }}" class="bg-green-900/20 border border-green-800/40 rounded-xl p-5 flex items-center justify-between hover:border-green-600/60 hover:bg-green-900/30 transition-all cursor-pointer">
-=======
-    </div>
-    <div class="bg-purple-900/20 border border-purple-800/40 rounded-xl p-5 flex items-center justify-between">
+    <a href="{{ route('admin.orders', ['status' => 'shipped']) }}" class="bg-purple-900/20 border border-purple-800/40 rounded-xl p-5 flex items-center justify-between hover:border-purple-600/60 hover:bg-purple-900/30 transition-all cursor-pointer">
         <div>
             <p class="text-purple-400 text-xs uppercase tracking-wider font-semibold mb-1">Dikirim</p>
             <p class="text-3xl font-black text-purple-300">{{ $stats['shipped_orders'] }}</p>
@@ -172,9 +163,8 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10M13 8h7a1 1 0 011 1v7m-9 0h9"/>
             </svg>
         </div>
-    </div>
-    <div class="bg-green-900/20 border border-green-800/40 rounded-xl p-5 flex items-center justify-between">
->>>>>>> 747d56584af4015fb1fccf43d20fa516b5d1c921
+    </a>
+    <a href="{{ route('admin.orders', ['status' => 'completed']) }}" class="bg-green-900/20 border border-green-800/40 rounded-xl p-5 flex items-center justify-between hover:border-green-600/60 hover:bg-green-900/30 transition-all cursor-pointer">
         <div>
             <p class="text-green-400 text-xs uppercase tracking-wider font-semibold mb-1">Selesai</p>
             <p class="text-3xl font-black text-green-300">{{ $stats['completed_orders'] }}</p>
