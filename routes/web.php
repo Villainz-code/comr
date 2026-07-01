@@ -46,9 +46,13 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
 Route::prefix('user')->middleware(['auth', 'customer'])->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\User\DashboardController::class, 'index'])->name('user.dashboard');
     Route::get('/shop', [App\Http\Controllers\User\ShopController::class, 'index'])->name('user.shop');
+    Route::get('/shop/{product}', [App\Http\Controllers\User\ShopController::class, 'show'])->name('user.shop.show');
     Route::get('/order/create/{product}', [App\Http\Controllers\User\OrderController::class, 'create'])->name('user.order.create');
     Route::post('/order/store', [App\Http\Controllers\User\OrderController::class, 'store'])->name('user.order.store');
     Route::get('/orders', [App\Http\Controllers\User\OrderController::class, 'index'])->name('user.orders');
+    Route::get('/orders/{order}/edit', [App\Http\Controllers\User\OrderController::class, 'edit'])->name('user.order.edit');
+    Route::put('/orders/{order}', [App\Http\Controllers\User\OrderController::class, 'update'])->name('user.order.update');
+    Route::put('/orders/{order}/cancel', [App\Http\Controllers\User\OrderController::class, 'cancel'])->name('user.order.cancel');
     Route::get('/profile', [App\Http\Controllers\User\ProfileController::class, 'edit'])->name('user.profile');
     Route::put('/profile', [App\Http\Controllers\User\ProfileController::class, 'update'])->name('user.profile.update');
 });

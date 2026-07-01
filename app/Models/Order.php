@@ -11,8 +11,19 @@ class Order extends Model
         'user_id',
         'product_id',
         'quantity',
+        'selected_size',
         'total_price',
         'shipping_address',
+        'recipient_name',
+        'phone',
+        'email',
+        'city',
+        'country',
+        'shipping_method',
+        'shipping_cost',
+        'payment_method',
+        'payment_channel',
+        'shipping_note',
         'status',
     ];
 
@@ -20,6 +31,7 @@ class Order extends Model
     {
         return [
             'total_price' => 'decimal:2',
+            'shipping_cost' => 'decimal:2',
         ];
     }
 

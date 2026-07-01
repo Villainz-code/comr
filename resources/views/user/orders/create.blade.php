@@ -10,6 +10,8 @@
         <nav class="flex items-center space-x-2 text-xs text-gray-500 mb-8">
             <a href="{{ route('user.shop') }}" class="hover:text-white transition-colors">Shop</a>
             <span>›</span>
+            <a href="{{ route('user.shop.show', $product) }}" class="hover:text-white transition-colors">{{ Str::limit($product->name, 30) }}</a>
+            <span>›</span>
             <span class="text-gray-300">Checkout</span>
         </nav>
 
@@ -17,6 +19,7 @@
             @csrf
             <input type="hidden" name="product_id" value="{{ $product->id }}">
             <input type="hidden" name="payment_channel" id="payment-channel-input" value="">
+            <input type="hidden" name="selected_size" id="selected-size-input" value="{{ request('size', '') }}">
 
             <div class="checkout-grid">
 
@@ -169,12 +172,13 @@
                     {{-- Metode Pembayaran Section --}}
                     <div class="checkout-section">
                         <h2 class="section-title">Metode Pembayaran</h2>
+                        <p class="section-subtitle" style="color: #ef4444;" id="payment-warning">⚠ Pilih metode pembayaran</p>
                         <div class="payment-methods">
 
                             {{-- Transfer Bank --}}
                             <div class="payment-group">
-                                <div class="payment-option selected" id="payment-transfer" data-method="transfer">
-                                    <input type="radio" name="payment_method" value="transfer" checked class="sr-only">
+                                <div class="payment-option" id="payment-transfer" data-method="transfer">
+                                    <input type="radio" name="payment_method" value="transfer" class="sr-only">
                                     <div class="payment-option-content">
                                         <div class="payment-icon bank-icon">
                                             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -193,12 +197,12 @@
                                 </div>
 
                                 {{-- Bank Sub-Options --}}
-                                <div class="payment-sub-options" id="bank-sub-options">
+                                <div class="payment-sub-options" id="bank-sub-options" style="display:none;">
                                     <div class="sub-option-header">
                                         <span class="sub-option-badge">Virtual Account</span>
                                     </div>
-                                    <label class="sub-option selected" data-channel="mandiri">
-                                        <input type="radio" name="bank_channel" value="mandiri" checked class="sr-only">
+                                    <label class="sub-option" data-channel="mandiri">
+                                        <input type="radio" name="bank_channel" value="mandiri" class="sr-only">
                                         <div class="sub-option-icon" style="background: #003d79;">
                                             <span style="font-size: 8px; font-weight: 800; color: #f7c500; letter-spacing: -0.5px;">mandiri</span>
                                         </div>
@@ -399,6 +403,9 @@
                                 <h3 class="product-name">{{ $product->name }}</h3>
                                 <p class="product-variant">{{ $product->category->name }}</p>
                                 <p class="product-quantity">Jumlah: <span id="display-qty">1</span></p>
+                                @if(request('size'))
+                                <p class="product-variant" style="color: #10b981;">Ukuran: {{ request('size') }}</p>
+                                @endif
                             </div>
                             <p class="product-price">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
                         </div>
@@ -472,14 +479,14 @@
                             </div>
                             <div class="price-row">
                                 <span class="price-label">Pengiriman</span>
-                                <span class="price-value" id="shipping-cost">-</span>
+                                <span class="price-value" id="shipping-cost">Rp 15.000</span>
                             </div>
                         </div>
 
                         {{-- Total --}}
                         <div class="total-section">
                             <span class="total-label">Total Pembayaran</span>
-                            <span class="total-value" id="summary-total">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+                            <span class="total-value" id="summary-total">Rp {{ number_format($product->price + 15000, 0, ',', '.') }}</span>
                         </div>
 
                         {{-- Security Badge --}}
@@ -1400,6 +1407,12 @@
 </style>
 
 <script>
+    // ========== SHIPPING COSTS ==========
+    const SHIPPING_COSTS = {
+        regular: 15000,
+        express: 25000
+    };
+
     // ========== PRICE & QUANTITY LOGIC ==========
     const pricePerUnit = {{ $product->price }};
     const maxStock = {{ $product->stock }};
@@ -1408,9 +1421,18 @@
     const summaryQtyText = document.getElementById('summary-qty-text');
     const summarySubtotal = document.getElementById('summary-subtotal');
     const summaryTotal = document.getElementById('summary-total');
+    const shippingCostEl = document.getElementById('shipping-cost');
 
     function formatRupiah(num) {
         return 'Rp ' + num.toLocaleString('id-ID');
+    }
+
+    function getSelectedShippingCost() {
+        const selected = document.querySelector('input[name="shipping_method"]:checked');
+        if (selected) {
+            return SHIPPING_COSTS[selected.value] || 0;
+        }
+        return SHIPPING_COSTS.regular;
     }
 
     function updateSummary() {
@@ -1418,8 +1440,13 @@
         qtyInput.value = qty;
         displayQty.textContent = qty;
         summaryQtyText.textContent = qty;
-        const total = qty * pricePerUnit;
-        summarySubtotal.textContent = formatRupiah(total);
+
+        const subtotal = qty * pricePerUnit;
+        const shippingCost = getSelectedShippingCost();
+        const total = subtotal + shippingCost;
+
+        summarySubtotal.textContent = formatRupiah(subtotal);
+        shippingCostEl.textContent = formatRupiah(shippingCost);
         summaryTotal.textContent = formatRupiah(total);
     }
 
@@ -1464,14 +1491,16 @@
             document.querySelectorAll('.radio-card').forEach(o => o.classList.remove('selected'));
             this.classList.add('selected');
             this.querySelector('input[type="radio"]').checked = true;
+            updateSummary();
         });
     });
 
-    // ========== PAYMENT METHOD SELECTION ==========
+    // ========== PAYMENT METHOD SELECTION (NO AUTO-CHECK) ==========
     const paymentOptions = document.querySelectorAll('.payment-option');
     const bankSubOptions = document.getElementById('bank-sub-options');
     const ewalletSubOptions = document.getElementById('ewallet-sub-options');
     const paymentChannelInput = document.getElementById('payment-channel-input');
+    const paymentWarning = document.getElementById('payment-warning');
 
     paymentOptions.forEach(option => {
         option.addEventListener('click', function(e) {
@@ -1486,24 +1515,31 @@
             this.classList.add('selected');
             this.querySelector('input[type="radio"]').checked = true;
 
+            // Hide warning
+            paymentWarning.style.display = 'none';
+
             // Show/hide sub-options
             if (method === 'transfer') {
                 bankSubOptions.style.display = 'block';
                 ewalletSubOptions.style.display = 'none';
                 this.classList.add('expanded');
-                // Set channel from bank selection
+                // Set channel from bank selection (only if one is already selected)
                 const checkedBank = document.querySelector('input[name="bank_channel"]:checked');
                 if (checkedBank) {
                     paymentChannelInput.value = checkedBank.value;
+                } else {
+                    paymentChannelInput.value = '';
                 }
             } else if (method === 'ewallet') {
                 bankSubOptions.style.display = 'none';
                 ewalletSubOptions.style.display = 'block';
                 this.classList.add('expanded');
-                // Set channel from ewallet selection
+                // Set channel from ewallet selection (only if one is already selected)
                 const checkedEwallet = document.querySelector('input[name="ewallet_channel"]:checked');
                 if (checkedEwallet) {
                     paymentChannelInput.value = checkedEwallet.value;
+                } else {
+                    paymentChannelInput.value = '';
                 }
             } else {
                 bankSubOptions.style.display = 'none';
@@ -1550,6 +1586,7 @@
         if (addressField.value.trim().length > 5 || cityField.value.trim().length > 0) {
             shippingOptions.classList.remove('hidden');
             shippingNotice.style.display = 'none';
+            updateSummary();
         } else {
             shippingOptions.classList.add('hidden');
             shippingNotice.style.display = 'block';
@@ -1560,21 +1597,34 @@
     cityField.addEventListener('input', checkShippingVisibility);
     checkShippingVisibility();
 
-    // ========== INIT: Set default channel ==========
-    (function() {
-        const checkedBank = document.querySelector('input[name="bank_channel"]:checked');
-        if (checkedBank) {
-            paymentChannelInput.value = checkedBank.value;
-            const parent = checkedBank.closest('.sub-option');
-            if (parent) {
-                const name = parent.querySelector('.sub-option-name').textContent;
-                document.getElementById('transfer-selected-label').textContent = name;
+    // ========== FORM VALIDATION ==========
+    document.getElementById('checkout-form').addEventListener('submit', function(e) {
+        const paymentSelected = document.querySelector('input[name="payment_method"]:checked');
+        if (!paymentSelected) {
+            e.preventDefault();
+            paymentWarning.style.display = 'block';
+            paymentWarning.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return false;
+        }
+
+        // If transfer or ewallet, check sub-option is selected
+        if (paymentSelected.value === 'transfer') {
+            const bankSelected = document.querySelector('input[name="bank_channel"]:checked');
+            if (!bankSelected) {
+                e.preventDefault();
+                alert('Pilih bank untuk pembayaran transfer.');
+                return false;
             }
         }
-        // Show bank sub-options by default since Transfer Bank is selected
-        bankSubOptions.style.display = 'block';
-        document.getElementById('payment-transfer').classList.add('expanded');
-    })();
+        if (paymentSelected.value === 'ewallet') {
+            const ewalletSelected = document.querySelector('input[name="ewallet_channel"]:checked');
+            if (!ewalletSelected) {
+                e.preventDefault();
+                alert('Pilih e-wallet untuk pembayaran.');
+                return false;
+            }
+        }
+    });
 </script>
 
 @endsection

@@ -26,4 +26,20 @@ class ShopController extends Controller
 
         return view('user.shop.index', compact('products', 'categories'));
     }
+
+    public function show(Product $product)
+    {
+        if ($product->status !== 'active') {
+            return redirect()->route('user.shop')
+                ->with('error', 'Produk tidak tersedia.');
+        }
+
+        $relatedProducts = Product::where('status', 'active')
+            ->where('category_id', $product->category_id)
+            ->where('id', '!=', $product->id)
+            ->limit(4)
+            ->get();
+
+        return view('user.shop.show', compact('product', 'relatedProducts'));
+    }
 }

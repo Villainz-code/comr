@@ -17,6 +17,7 @@ class Product extends Model
         'price',
         'stock',
         'image',
+        'sizes',
         'status',
     ];
 
@@ -24,6 +25,7 @@ class Product extends Model
     {
         return [
             'price' => 'decimal:2',
+            'sizes' => 'array',
         ];
     }
 
