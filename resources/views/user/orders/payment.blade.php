@@ -124,7 +124,7 @@
     function copyCode() {
         const code = document.getElementById('payment-code').innerText;
         navigator.clipboard.writeText(code).then(() => {
-            alert('Kode pembayaran disalin!');
+            showNotification('Kode pembayaran disalin!');
         });
     }
 

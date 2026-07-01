@@ -1669,7 +1669,7 @@
             const bankSelected = document.querySelector('input[name="bank_channel"]:checked');
             if (!bankSelected) {
                 e.preventDefault();
-                alert('Pilih bank untuk pembayaran transfer.');
+                showNotification('Pilih bank untuk pembayaran transfer.');
                 return false;
             }
         }
@@ -1677,7 +1677,7 @@
             const ewalletSelected = document.querySelector('input[name="ewallet_channel"]:checked');
             if (!ewalletSelected) {
                 e.preventDefault();
-                alert('Pilih e-wallet untuk pembayaran.');
+                showNotification('Pilih e-wallet untuk pembayaran.');
                 return false;
             }
         }
@@ -1686,7 +1686,7 @@
         const sizeInput = document.getElementById('selected-size-input');
         if (sizeInput && document.querySelector('.size-btn') && !sizeInput.value) {
             e.preventDefault();
-            alert('Pilih ukuran produk sebelum melanjutkan.');
+            showNotification('Pilih ukuran produk sebelum melanjutkan.');
             return false;
         }
     });

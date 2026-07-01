@@ -175,6 +175,38 @@
             }
         }, 4000);
 
+        // Replace native alert with SweetAlert2
+        window.alert = function(message) {
+            Swal.fire({
+                title: `<div class="flex items-center space-x-3 text-left">
+                            <svg class="w-5 h-5 text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <div>
+                                <span class="block text-sm font-semibold text-white">Informasi</span>
+                                <span class="block text-xs text-gray-400 font-normal mt-0.5">${message}</span>
+                            </div>
+                        </div>`,
+                position: 'top',
+                showConfirmButton: true,
+                confirmButtonText: 'Mengerti',
+                background: '#111111',
+                color: '#ffffff',
+                buttonsStyling: false,
+                showClass: {
+                    popup: 'animate-[slideInDown_0.3s_ease-out]'
+                },
+                hideClass: {
+                    popup: 'animate-[slideOutUp_0.3s_ease-in]'
+                },
+                customClass: {
+                    popup: 'border border-gray-800 rounded-xl mt-6 !flex-row items-center justify-between !w-auto min-w-[320px] sm:min-w-[450px] !py-3 !px-4 shadow-2xl bg-[#111111]',
+                    title: '!m-0 !p-0 flex-1',
+                    htmlContainer: '!hidden',
+                    actions: '!m-0 !p-0',
+                    confirmButton: 'px-4 py-2 rounded-lg m-0 bg-white text-black font-semibold text-xs hover:bg-gray-200 transition-colors'
+                }
+            });
+        };
+
         // Replace native confirms with SweetAlert2
         document.addEventListener('DOMContentLoaded', function() {
             const confirmForms = document.querySelectorAll('form[onsubmit*="return confirm"]');
