@@ -388,12 +388,24 @@
                                 <h3 class="product-name">{{ $product->name }}</h3>
                                 <p class="product-variant">{{ $product->category->name }}</p>
                                 <p class="product-quantity">Jumlah: <span id="display-qty">1</span></p>
-                                @if(request('size'))
-                                <p class="product-variant" style="color: #10b981;">Ukuran: {{ request('size') }}</p>
-                                @endif
                             </div>
                             <p class="product-price">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
                         </div>
+
+                        {{-- Sizes (if applicable) --}}
+                        @if($product->sizes && count($product->sizes) > 0)
+                        <div class="mb-4">
+                            <span class="quantity-label" style="display: block; margin-bottom: 8px;">Pilih Ukuran</span>
+                            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                @foreach($product->sizes as $size)
+                                    <button type="button" class="size-btn {{ old('selected_size', request('size')) == $size ? 'active' : '' }}" data-size="{{ $size }}" onclick="selectSize(this)">
+                                        {{ $size }}
+                                    </button>
+                                @endforeach
+                            </div>
+                        </div>
+                        @error('selected_size') <p class="input-error" style="margin: -8px 0 12px">{{ $message }}</p> @enderror
+                        @endif
 
                         {{-- Quantity Selector --}}
                         <div class="quantity-selector">
@@ -503,6 +515,11 @@
 </div>
 
 <style>
+    /* ========== SIZES ========== */
+    .size-btn { min-width: 44px; height: 36px; display: inline-flex; align-items: center; justify-content: center; padding: 0 12px; background: transparent; border: 1px solid #2a2a2a; border-radius: 8px; color: #d1d5db; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+    .size-btn:hover { border-color: #6b7280; background: rgba(255,255,255,0.03); }
+    .size-btn.active { border-color: #ffffff; background: rgba(255,255,255,0.08); color: #ffffff; }
+
     /* ========== CHECKOUT PAGE LAYOUT ========== */
     .checkout-page {
         min-height: 100vh;
@@ -1649,7 +1666,28 @@
                 return false;
             }
         }
+        
+        // If product has sizes, check if one is selected
+        const sizeInput = document.getElementById('selected-size-input');
+        if (sizeInput && document.querySelector('.size-btn') && !sizeInput.value) {
+            e.preventDefault();
+            alert('Pilih ukuran produk sebelum melanjutkan.');
+            return false;
+        }
     });
+
+    // ========== SIZE SELECTION ==========
+    window.selectSize = function(btn) {
+        document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const size = btn.dataset.size;
+        document.getElementById('selected-size-input').value = size;
+        
+        // Update URL to reflect size selection without reloading
+        const url = new URL(window.location);
+        url.searchParams.set('size', size);
+        window.history.replaceState({}, '', url);
+    }
 </script>
 
 @endsection
