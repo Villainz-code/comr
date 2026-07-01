@@ -29,9 +29,38 @@
 
         {{-- Cart Items --}}
         <div class="lg:col-span-2 space-y-4">
+
+            {{-- Select All --}}
+            <div class="bg-[#111] border border-gray-800 rounded-xl px-5 py-3 flex items-center gap-3">
+                <label class="relative flex items-center cursor-pointer group">
+                    <input type="checkbox" id="select-all" class="peer sr-only" checked>
+                    <div class="w-5 h-5 border-2 border-gray-600 rounded-md flex items-center justify-center transition-all
+                                peer-checked:border-white peer-checked:bg-white group-hover:border-gray-400">
+                        <svg class="w-3 h-3 text-black hidden peer-checked:block" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">
+                            <path d="M5 13l4 4L19 7"/>
+                        </svg>
+                    </div>
+                </label>
+                <span class="text-sm font-medium text-gray-300">Pilih Semua (<span id="selected-count">{{ $cartItems->count() }}</span>/{{ $cartItems->count() }})</span>
+            </div>
+
             @foreach($cartItems as $item)
-            <div class="bg-[#111] border border-gray-800 rounded-xl p-5 hover:border-gray-700 transition-colors">
+            <div class="bg-[#111] border border-gray-800 rounded-xl p-5 hover:border-gray-700 transition-colors cart-item-card" data-cart-id="{{ $item->id }}" data-price="{{ $item->product->price }}" data-qty="{{ $item->quantity }}" data-name="{{ $item->product->name }}" data-product-id="{{ $item->product->id }}" data-size="{{ $item->selected_size ?? '' }}" data-order-url="{{ route('user.order.create', $item->product) }}">
                 <div class="flex gap-4">
+
+                    {{-- Checkbox --}}
+                    <div class="flex items-start pt-1">
+                        <label class="relative flex items-center cursor-pointer group">
+                            <input type="checkbox" class="cart-item-check peer sr-only" data-cart-id="{{ $item->id }}" checked>
+                            <div class="w-5 h-5 border-2 border-gray-600 rounded-md flex items-center justify-center transition-all
+                                        peer-checked:border-white peer-checked:bg-white group-hover:border-gray-400">
+                                <svg class="w-3 h-3 text-black hidden peer-checked:block" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">
+                                    <path d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </div>
+                        </label>
+                    </div>
+
                     {{-- Product Image --}}
                     <a href="{{ route('user.shop.show', $item->product) }}" class="flex-shrink-0">
                         @if($item->product->image)
@@ -108,34 +137,36 @@
             <div class="bg-[#111] border border-gray-800 rounded-xl p-6 sticky top-20">
                 <h2 class="font-bold text-sm uppercase tracking-wider text-gray-300 mb-4">Ringkasan Belanja</h2>
 
-                <div class="space-y-3 mb-4">
-                    @foreach($cartItems as $item)
-                    <div class="flex justify-between text-sm">
-                        <span class="text-gray-400 truncate mr-2">{{ $item->product->name }} × {{ $item->quantity }}</span>
-                        <span class="text-gray-300 flex-shrink-0">Rp {{ number_format($item->product->price * $item->quantity, 0, ',', '.') }}</span>
-                    </div>
-                    @endforeach
+                <div id="summary-items" class="space-y-3 mb-4">
+                    {{-- Populated by JS --}}
+                </div>
+
+                <div id="summary-empty" class="text-center py-4 hidden">
+                    <p class="text-gray-500 text-sm">Pilih produk untuk melihat ringkasan</p>
                 </div>
 
                 <div class="h-px bg-gray-800 my-4"></div>
 
                 <div class="flex justify-between items-center mb-6">
-                    <span class="text-gray-300 font-medium">Total</span>
-                    <span class="text-xl font-bold text-white">Rp {{ number_format($subtotal, 0, ',', '.') }}</span>
+                    <span class="text-gray-300 font-medium">Total (<span id="summary-selected-count">0</span> produk)</span>
+                    <span class="text-xl font-bold text-white" id="summary-total">Rp 0</span>
                 </div>
 
                 <p class="text-gray-600 text-xs mb-4">* Ongkos kirim dihitung saat checkout per produk</p>
 
-                <div class="space-y-2">
-                    @foreach($cartItems as $item)
-                    <a href="{{ route('user.order.create', $item->product) }}{{ $item->selected_size ? '?size=' . urlencode($item->selected_size) . '&qty=' . $item->quantity : '?qty=' . $item->quantity }}"
-                       class="w-full inline-flex items-center justify-center bg-white text-black font-semibold py-3 rounded-lg text-sm hover:bg-gray-200 transition-all hover:-translate-y-0.5">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                {{-- Bulk Checkout Button --}}
+                <form method="GET" action="{{ route('user.order.createBulk') }}" id="bulk-checkout-form" class="hidden mb-3">
+                    <input type="hidden" name="cart_ids" id="bulk-cart-ids" value="">
+                    <button type="submit" class="w-full inline-flex items-center justify-center bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold py-3.5 rounded-lg text-sm hover:from-emerald-400 hover:to-green-500 transition-all hover:-translate-y-0.5 shadow-lg shadow-green-900/30">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                         </svg>
-                        Pesan {{ $item->product->name }}
-                    </a>
-                    @endforeach
+                        Checkout Semua Produk Terpilih
+                    </button>
+                </form>
+
+                <div id="summary-buttons" class="space-y-2">
+                    {{-- Populated by JS --}}
                 </div>
 
                 <a href="{{ route('user.shop') }}" class="w-full inline-flex items-center justify-center text-gray-400 hover:text-white border border-gray-700 hover:border-gray-500 py-3 rounded-lg text-sm transition-all mt-3">
@@ -166,4 +197,143 @@
     @endif
 
 </div>
+
+@if($cartItems->count() > 0)
+<style>
+    .cart-item-card {
+        transition: all 0.2s ease;
+    }
+    .cart-item-card.unselected {
+        opacity: 0.5;
+        border-color: #1f2937 !important;
+    }
+    .cart-item-card.unselected:hover {
+        opacity: 0.7;
+    }
+    /* Fix checkbox rendering */
+    .peer:checked ~ div svg { display: block !important; }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const selectAllCheckbox = document.getElementById('select-all');
+    const itemCheckboxes = document.querySelectorAll('.cart-item-check');
+    const summaryItems = document.getElementById('summary-items');
+    const summaryEmpty = document.getElementById('summary-empty');
+    const summaryTotal = document.getElementById('summary-total');
+    const summaryButtons = document.getElementById('summary-buttons');
+    const summarySelectedCount = document.getElementById('summary-selected-count');
+    const selectedCountLabel = document.getElementById('selected-count');
+
+    function formatRupiah(num) {
+        return 'Rp ' + num.toLocaleString('id-ID');
+    }
+
+    function updateSummary() {
+        let total = 0;
+        let selectedCount = 0;
+        let itemsHtml = '';
+        let buttonsHtml = '';
+        let selectedCartIds = [];
+
+        itemCheckboxes.forEach(checkbox => {
+            const card = checkbox.closest('.cart-item-card');
+            const isChecked = checkbox.checked;
+
+            if (isChecked) {
+                card.classList.remove('unselected');
+                selectedCount++;
+                selectedCartIds.push(card.dataset.cartId);
+
+                const price = parseInt(card.dataset.price);
+                const qty = parseInt(card.dataset.qty);
+                const name = card.dataset.name;
+                const size = card.dataset.size;
+                const orderUrl = card.dataset.orderUrl;
+                const subtotal = price * qty;
+                total += subtotal;
+
+                // Build query params
+                let params = '?qty=' + qty;
+                if (size) params = '?size=' + encodeURIComponent(size) + '&qty=' + qty;
+
+                itemsHtml += `
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-400 truncate mr-2">${name} × ${qty}</span>
+                        <span class="text-gray-300 flex-shrink-0">${formatRupiah(subtotal)}</span>
+                    </div>
+                `;
+
+                buttonsHtml += `
+                    <a href="${orderUrl}${params}"
+                       class="w-full inline-flex items-center justify-center bg-white text-black font-semibold py-3 rounded-lg text-sm hover:bg-gray-200 transition-all hover:-translate-y-0.5">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                        </svg>
+                        Pesan ${name}
+                    </a>
+                `;
+            } else {
+                card.classList.add('unselected');
+            }
+        });
+
+        // Update summary display
+        summaryItems.innerHTML = itemsHtml;
+        summaryTotal.textContent = formatRupiah(total);
+        summarySelectedCount.textContent = selectedCount;
+        selectedCountLabel.textContent = selectedCount;
+
+        if (selectedCount === 0) {
+            summaryEmpty.classList.remove('hidden');
+            summaryItems.classList.add('hidden');
+        } else {
+            summaryEmpty.classList.add('hidden');
+            summaryItems.classList.remove('hidden');
+        }
+
+        // Bulk checkout button: show when 2+ selected
+        const bulkForm = document.getElementById('bulk-checkout-form');
+        const bulkCartIds = document.getElementById('bulk-cart-ids');
+        if (selectedCount > 1) {
+            bulkForm.classList.remove('hidden');
+            bulkCartIds.value = selectedCartIds.join(',');
+            summaryButtons.innerHTML = ''; // Hide individual buttons
+        } else {
+            bulkForm.classList.add('hidden');
+            bulkCartIds.value = '';
+            summaryButtons.innerHTML = buttonsHtml; // Show individual button
+        }
+
+        // Update Select All checkbox state
+        if (selectedCount === itemCheckboxes.length) {
+            selectAllCheckbox.checked = true;
+            selectAllCheckbox.indeterminate = false;
+        } else if (selectedCount === 0) {
+            selectAllCheckbox.checked = false;
+            selectAllCheckbox.indeterminate = false;
+        } else {
+            selectAllCheckbox.checked = false;
+            selectAllCheckbox.indeterminate = true;
+        }
+    }
+
+    // Select All handler
+    selectAllCheckbox.addEventListener('change', function() {
+        itemCheckboxes.forEach(checkbox => {
+            checkbox.checked = selectAllCheckbox.checked;
+        });
+        updateSummary();
+    });
+
+    // Individual checkbox handlers
+    itemCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', updateSummary);
+    });
+
+    // Initialize on load
+    updateSummary();
+});
+</script>
+@endif
 @endsection

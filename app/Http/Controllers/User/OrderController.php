@@ -121,13 +121,142 @@ class OrderController extends Controller
             ->with('success', 'Pesanan berhasil dibuat! Silakan selesaikan pembayaran Anda.');
     }
 
+    public function createBulk(Request $request)
+    {
+        $request->validate([
+            'cart_ids' => ['required', 'string'],
+        ]);
+
+        $cartIds = explode(',', $request->cart_ids);
+        $user = auth()->user();
+
+        $cartItems = \App\Models\Cart::where('user_id', $user->id)
+            ->whereIn('id', $cartIds)
+            ->with('product')
+            ->get();
+
+        if ($cartItems->isEmpty()) {
+            return redirect()->route('user.cart')->with('error', 'Tidak ada item yang dipilih.');
+        }
+
+        $subtotal = 0;
+        $totalQty = 0;
+        foreach ($cartItems as $item) {
+            $subtotal += $item->product->price * $item->quantity;
+            $totalQty += $item->quantity;
+        }
+
+        return view('user.orders.create_bulk', compact('cartItems', 'cartIds', 'subtotal', 'totalQty'));
+    }
+
+    public function storeBulk(Request $request)
+    {
+        $request->validate([
+            'cart_ids' => ['required', 'string'],
+            'shipping_address' => ['required', 'string', 'max:250'],
+            'recipient_name' => ['required', 'string', 'max:255'],
+            'phone' => ['required', 'string', 'max:50'],
+            'email' => ['nullable', 'email', 'max:255'],
+            'city' => ['nullable', 'string', 'max:255'],
+            'country' => ['required', 'string'],
+            'shipping_method' => ['required', 'in:regular,express'],
+            'payment_method' => ['required', 'in:transfer,ewallet,cod'],
+            'payment_channel' => ['nullable', 'string'],
+        ], [
+            'shipping_address.required' => 'Alamat pengiriman wajib diisi.',
+            'recipient_name.required' => 'Nama penerima wajib diisi.',
+            'phone.required' => 'Nomor HP wajib diisi.',
+            'payment_method.required' => 'Pilih metode pembayaran.',
+        ]);
+
+        $cartIds = explode(',', $request->cart_ids);
+        $user = auth()->user();
+
+        $cartItems = \App\Models\Cart::where('user_id', $user->id)
+            ->whereIn('id', $cartIds)
+            ->with('product')
+            ->get();
+
+        if ($cartItems->isEmpty()) {
+            return redirect()->route('user.cart')->with('error', 'Pesanan tidak valid atau stok habis.');
+        }
+
+        $cityName = '';
+        if ($user->regency && $user->district) {
+            $cityName = $user->regency->name . ', ' . $user->district->name;
+        } elseif ($user->regency) {
+            $cityName = $user->regency->name;
+        } else {
+            $cityName = $request->input('city', '');
+        }
+
+        $shippingMethod = $request->input('shipping_method', 'regular');
+        $shippingCostPerItem = ($shippingMethod === 'express') ? 25000 : 15000;
+
+        $channelPrefix = strtoupper($request->input('payment_channel', 'INV'));
+        $paymentCode = $channelPrefix . date('ymd') . strtoupper(Str::random(4));
+        $paymentDeadline = now()->addHours(24);
+
+        $orderCount = 0;
+        $firstOrder = null;
+
+        foreach ($cartItems as $item) {
+            $product = $item->product;
+
+            if ($product->stock < $item->quantity) {
+                continue; // Skip items with insufficient stock
+            }
+
+            $totalPrice = ($product->price * $item->quantity) + $shippingCostPerItem;
+
+            $newOrder = Order::create([
+                'user_id' => $user->id,
+                'product_id' => $product->id,
+                'quantity' => $item->quantity,
+                'selected_size' => $item->selected_size,
+                'total_price' => $totalPrice,
+                'shipping_address' => $request->shipping_address,
+                'recipient_name' => $request->input('recipient_name', $user->name),
+                'phone' => $request->input('phone', $user->phone),
+                'email' => $request->input('email', $user->email),
+                'city' => $cityName,
+                'country' => $request->input('country', 'Indonesia'),
+                'shipping_method' => $shippingMethod,
+                'shipping_cost' => $shippingCostPerItem,
+                'payment_method' => $request->input('payment_method'),
+                'payment_channel' => $request->input('payment_channel'),
+                'shipping_note' => $request->input('shipping_note'),
+                'payment_code' => $paymentCode,
+                'payment_deadline' => $paymentDeadline,
+                'status' => 'pending',
+            ]);
+
+            if (!$firstOrder) {
+                $firstOrder = $newOrder;
+            }
+
+            $product->decrement('stock', $item->quantity);
+            $item->delete();
+            $orderCount++;
+        }
+
+        if ($orderCount === 0 || !$firstOrder) {
+            return back()->with('error', 'Tidak ada pesanan yang berhasil dibuat. Mungkin stok habis.');
+        }
+
+        return redirect()->route('user.orders.payment', $firstOrder)
+            ->with('success', $orderCount . ' pesanan berhasil dibuat! Silakan selesaikan pembayaran Anda.');
+    }
+
     public function payment(Order $order)
     {
         if ($order->user_id !== auth()->id() || $order->status !== 'pending') {
             return redirect()->route('user.orders')->with('error', 'Halaman pembayaran tidak tersedia.');
         }
 
-        return view('user.orders.payment', compact('order'));
+        $totalPrice = \App\Models\Order::where('payment_code', $order->payment_code)->sum('total_price');
+
+        return view('user.orders.payment', compact('order', 'totalPrice'));
     }
 
     public function edit(Order $order)

@@ -55,6 +55,8 @@ Route::prefix('user')->middleware(['auth', 'customer'])->group(function () {
     Route::get('/shop/{product}', [App\Http\Controllers\User\ShopController::class, 'show'])->name('user.shop.show');
     Route::get('/order/create/{product}', [App\Http\Controllers\User\OrderController::class, 'create'])->name('user.order.create');
     Route::post('/order/store', [App\Http\Controllers\User\OrderController::class, 'store'])->name('user.order.store');
+    Route::get('/order/checkout-bulk', [App\Http\Controllers\User\OrderController::class, 'createBulk'])->name('user.order.createBulk');
+    Route::post('/order/store-bulk', [App\Http\Controllers\User\OrderController::class, 'storeBulk'])->name('user.order.storeBulk');
     Route::get('/orders', [App\Http\Controllers\User\OrderController::class, 'index'])->name('user.orders');
     Route::get('/orders/{order}/payment', [App\Http\Controllers\User\OrderController::class, 'payment'])->name('user.orders.payment');
     Route::get('/orders/{order}/edit', [App\Http\Controllers\User\OrderController::class, 'edit'])->name('user.order.edit');
