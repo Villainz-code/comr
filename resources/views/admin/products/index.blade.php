@@ -20,6 +20,21 @@
     </a>
 </div>
 
+{{-- Category Filter --}}
+<div class="flex flex-wrap items-center gap-2 mb-6">
+    <span class="text-gray-500 text-xs font-semibold uppercase tracking-wider mr-1">Filter:</span>
+    <a href="{{ route('admin.products.index') }}"
+       class="px-3.5 py-1.5 rounded-full text-xs font-medium transition-all {{ !request('category') ? 'bg-white text-black' : 'bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-gray-200' }}">
+        Semua
+    </a>
+    @foreach($categories as $category)
+        <a href="{{ route('admin.products.index', ['category' => $category->id]) }}"
+           class="px-3.5 py-1.5 rounded-full text-xs font-medium transition-all {{ request('category') == $category->id ? 'bg-white text-black' : 'bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-gray-200' }}">
+            {{ $category->name }}
+        </a>
+    @endforeach
+</div>
+
 {{-- Products Table --}}
 <div class="bg-[#111] border border-gray-800 rounded-xl overflow-hidden">
     <div class="overflow-x-auto">

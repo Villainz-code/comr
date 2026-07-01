@@ -164,6 +164,7 @@
         </main>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         setTimeout(() => {
             const msg = document.getElementById('flash-msg');
@@ -173,6 +174,56 @@
                 setTimeout(() => msg.remove(), 500);
             }
         }, 4000);
+
+        // Replace native confirms with SweetAlert2
+        document.addEventListener('DOMContentLoaded', function() {
+            const confirmForms = document.querySelectorAll('form[onsubmit*="return confirm"]');
+            confirmForms.forEach(form => {
+                const onsubmitStr = form.getAttribute('onsubmit');
+                const match = onsubmitStr.match(/confirm\(['"](.*?)['"]\)/);
+                const message = match ? match[1] : 'Apakah Anda yakin?';
+                
+                form.removeAttribute('onsubmit');
+                
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    Swal.fire({
+                        title: `<div class="flex items-center space-x-3 text-left">
+                                    <svg class="w-5 h-5 text-yellow-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                    <div>
+                                        <span class="block text-sm font-semibold text-white">Konfirmasi</span>
+                                        <span class="block text-xs text-gray-400 font-normal mt-0.5">${message}</span>
+                                    </div>
+                                </div>`,
+                        position: 'top',
+                        showCancelButton: true,
+                        confirmButtonText: 'Ya, Lanjutkan',
+                        cancelButtonText: 'Batal',
+                        background: '#111111',
+                        color: '#ffffff',
+                        buttonsStyling: false,
+                        showClass: {
+                            popup: 'animate-[slideInDown_0.3s_ease-out]'
+                        },
+                        hideClass: {
+                            popup: 'animate-[slideOutUp_0.3s_ease-in]'
+                        },
+                        customClass: {
+                            popup: 'border border-gray-800 rounded-xl mt-6 !flex-row items-center justify-between !w-auto min-w-[320px] sm:min-w-[450px] !py-3 !px-4 shadow-2xl bg-[#111111]',
+                            title: '!m-0 !p-0 flex-1',
+                            htmlContainer: '!hidden', // We put text in title
+                            actions: '!m-0 !p-0 space-x-2 flex',
+                            confirmButton: 'px-4 py-2 rounded-lg m-0 bg-white text-black font-semibold text-xs hover:bg-gray-200 transition-colors',
+                            cancelButton: 'px-4 py-2 rounded-lg m-0 bg-gray-800 text-gray-300 font-semibold text-xs hover:bg-gray-700 transition-colors'
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        });
     </script>
 </body>
 </html>
