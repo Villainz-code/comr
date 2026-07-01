@@ -62,4 +62,5 @@ Route::prefix('user')->middleware(['auth', 'customer'])->group(function () {
     Route::put('/orders/{order}/cancel', [App\Http\Controllers\User\OrderController::class, 'cancel'])->name('user.order.cancel');
     Route::get('/profile', [App\Http\Controllers\User\ProfileController::class, 'edit'])->name('user.profile');
     Route::put('/profile', [App\Http\Controllers\User\ProfileController::class, 'update'])->name('user.profile.update');
+    Route::delete('/profile/photo', [App\Http\Controllers\User\ProfileController::class, 'deletePhoto'])->name('user.profile.photo.delete');
 });
