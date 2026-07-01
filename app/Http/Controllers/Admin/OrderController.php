@@ -20,12 +20,28 @@ class OrderController extends Controller
     public function updateStatus(Request $request, $id)
     {
         $request->validate([
-            'status' => ['required', 'in:pending,processed,completed'],
+            'status' => 'required|in:pending,processed,completed,cancelled'
         ]);
 
         $order = Order::findOrFail($id);
-        $order->update(['status' => $request->status]);
+        $oldStatus = $order->status;
+        $newStatus = $request->status;
 
-        return redirect()->route('admin.orders')->with('success', 'Status pesanan berhasil diperbarui!');
+        $order->update([
+            'status' => $newStatus
+        ]);
+
+        // If cancelled by admin, and it wasn't cancelled before, restore stock
+        if ($newStatus === 'cancelled' && $oldStatus !== 'cancelled') {
+            $order->product->increment('stock', $order->quantity);
+        }
+
+        // If un-cancelled by admin, deduct stock
+        if ($oldStatus === 'cancelled' && $newStatus !== 'cancelled') {
+            $order->product->decrement('stock', $order->quantity);
+        }
+
+        return redirect()->route('admin.orders')
+            ->with('success', 'Status pesanan berhasil diperbarui.');
     }
 }

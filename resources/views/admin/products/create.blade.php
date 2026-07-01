@@ -64,6 +64,20 @@
                     @error('stock') <p class="text-red-400 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
 
+                {{-- Sizes --}}
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Ukuran Tersedia <span class="text-xs text-gray-500 font-normal ml-2">(Kosongkan jika produk tidak memiliki varian ukuran)</span></label>
+                    <div class="flex flex-wrap gap-3">
+                        @foreach(['S', 'M', 'L', 'XL', 'XXL', 'ALL SIZE'] as $size)
+                        <label class="inline-flex items-center bg-black border border-gray-700 rounded-lg px-4 py-2 cursor-pointer hover:border-gray-500 transition-colors">
+                            <input type="checkbox" name="sizes[]" value="{{ $size }}" {{ is_array(old('sizes')) && in_array($size, old('sizes')) ? 'checked' : '' }} class="mr-2 rounded border-gray-600 text-white focus:ring-white bg-gray-800">
+                            <span class="text-sm text-gray-300">{{ $size }}</span>
+                        </label>
+                        @endforeach
+                    </div>
+                    @error('sizes') <p class="text-red-400 text-xs mt-1">{{ $message }}</p> @enderror
+                </div>
+
                 {{-- Description --}}
                 <div class="md:col-span-2">
                     <label class="block text-sm font-medium text-gray-300 mb-2">Deskripsi</label>

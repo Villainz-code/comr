@@ -29,14 +29,24 @@
                 <tr class="hover:bg-gray-800/20 transition-colors">
                     <td class="px-6 py-4 text-gray-500 font-mono text-xs">#{{ str_pad($order->id, 4, '0', STR_PAD_LEFT) }}</td>
                     <td class="px-6 py-4 font-medium">{{ $order->user->name }}</td>
-                    <td class="px-6 py-4 text-gray-400 max-w-[160px] truncate">{{ $order->product->name }}</td>
+                    <td class="px-6 py-4 text-gray-400 max-w-[160px] truncate">
+                        {{ $order->product->name }}
+                        @if($order->selected_size)
+                            <div class="text-xs text-gray-500 mt-1">Ukuran: {{ $order->selected_size }}</div>
+                        @endif
+                    </td>
                     <td class="px-6 py-4 text-center font-semibold">{{ $order->quantity }}</td>
-                    <td class="px-6 py-4 font-semibold">Rp {{ number_format($order->total_price, 0, ',', '.') }}</td>
+                    <td class="px-6 py-4 font-semibold">
+                        Rp {{ number_format($order->total_price, 0, ',', '.') }}
+                        <div class="text-xs text-gray-500 font-normal mt-1">{{ strtoupper($order->payment_method) }} | Ongkir Rp{{ number_format($order->shipping_cost, 0, ',', '.') }}</div>
+                    </td>
                     <td class="px-6 py-4">
                         @if($order->status === 'pending')
                             <span class="bg-yellow-900/50 text-yellow-300 text-xs px-2.5 py-1 rounded-full font-medium">Pending</span>
                         @elseif($order->status === 'processed')
                             <span class="bg-blue-900/50 text-blue-300 text-xs px-2.5 py-1 rounded-full font-medium">Diproses</span>
+                        @elseif($order->status === 'cancelled')
+                            <span class="bg-red-900/50 text-red-300 text-xs px-2.5 py-1 rounded-full font-medium">Dibatalkan</span>
                         @else
                             <span class="bg-green-900/50 text-green-300 text-xs px-2.5 py-1 rounded-full font-medium">Selesai</span>
                         @endif
@@ -50,6 +60,7 @@
                                 <option value="pending" {{ $order->status === 'pending' ? 'selected' : '' }}>Pending</option>
                                 <option value="processed" {{ $order->status === 'processed' ? 'selected' : '' }}>Diproses</option>
                                 <option value="completed" {{ $order->status === 'completed' ? 'selected' : '' }}>Selesai</option>
+                                <option value="cancelled" {{ $order->status === 'cancelled' ? 'selected' : '' }}>Dibatalkan</option>
                             </select>
                             <button type="submit"
                                 class="bg-white text-black text-xs font-semibold px-3 py-1.5 rounded hover:bg-gray-200 transition-all">

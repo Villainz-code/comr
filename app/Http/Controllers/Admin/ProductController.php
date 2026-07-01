@@ -33,6 +33,8 @@ class ProductController extends Controller
             'stock' => ['required', 'integer', 'min:0'],
             'status' => ['required', 'in:active,inactive'],
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'],
+            'sizes' => ['nullable', 'array'],
+            'sizes.*' => ['string'],
         ], [
             'name.required' => 'Nama produk wajib diisi.',
             'category_id.required' => 'Kategori wajib dipilih.',
@@ -60,6 +62,7 @@ class ProductController extends Controller
             'stock' => $request->stock,
             'status' => $request->status,
             'image' => $imagePath,
+            'sizes' => $request->sizes ?? [],
         ]);
 
         return redirect()->route('admin.products.index')->with('success', 'Produk berhasil ditambahkan!');
@@ -86,6 +89,8 @@ class ProductController extends Controller
             'stock' => ['required', 'integer', 'min:0'],
             'status' => ['required', 'in:active,inactive'],
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'],
+            'sizes' => ['nullable', 'array'],
+            'sizes.*' => ['string'],
         ]);
 
         $data = [
@@ -95,6 +100,7 @@ class ProductController extends Controller
             'price' => $request->price,
             'stock' => $request->stock,
             'status' => $request->status,
+            'sizes' => $request->sizes ?? [],
         ];
 
         if ($request->hasFile('image')) {
