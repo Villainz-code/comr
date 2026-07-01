@@ -20,22 +20,22 @@
 
     {{-- Stats --}}
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-        <div class="bg-[#111] border border-gray-800 rounded-xl p-5 text-center hover:border-gray-600 transition-all">
+        <a href="{{ route('user.orders') }}" class="block bg-[#111] border border-gray-800 rounded-xl p-5 text-center hover:border-gray-600 transition-all">
             <p class="text-3xl font-black">{{ $stats['total_orders'] }}</p>
             <p class="text-gray-500 text-xs uppercase tracking-wider mt-1">Total Pesanan</p>
-        </div>
-        <div class="bg-yellow-900/20 border border-yellow-800/40 rounded-xl p-5 text-center hover:border-yellow-600/40 transition-all">
+        </a>
+        <a href="{{ route('user.orders', ['status' => 'pending']) }}" class="block bg-yellow-900/20 border border-yellow-800/40 rounded-xl p-5 text-center hover:border-yellow-600/40 transition-all">
             <p class="text-3xl font-black text-yellow-300">{{ $stats['pending_orders'] }}</p>
             <p class="text-yellow-500/70 text-xs uppercase tracking-wider mt-1">Pending</p>
-        </div>
-        <div class="bg-blue-900/20 border border-blue-800/40 rounded-xl p-5 text-center hover:border-blue-600/40 transition-all">
+        </a>
+        <a href="{{ route('user.orders', ['status' => 'processed']) }}" class="block bg-blue-900/20 border border-blue-800/40 rounded-xl p-5 text-center hover:border-blue-600/40 transition-all">
             <p class="text-3xl font-black text-blue-300">{{ $stats['processed_orders'] }}</p>
             <p class="text-blue-500/70 text-xs uppercase tracking-wider mt-1">Diproses</p>
-        </div>
-        <div class="bg-green-900/20 border border-green-800/40 rounded-xl p-5 text-center hover:border-green-600/40 transition-all">
+        </a>
+        <a href="{{ route('user.orders', ['status' => 'completed']) }}" class="block bg-green-900/20 border border-green-800/40 rounded-xl p-5 text-center hover:border-green-600/40 transition-all">
             <p class="text-3xl font-black text-green-300">{{ $stats['completed_orders'] }}</p>
             <p class="text-green-500/70 text-xs uppercase tracking-wider mt-1">Selesai</p>
-        </div>
+        </a>
     </div>
 
     {{-- Quick Actions --}}
