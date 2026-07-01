@@ -148,7 +148,7 @@
 
     {{-- Account Info --}}
     <div class="mt-4 bg-gray-900/20 border border-gray-800 rounded-xl p-4">
-        <p class="text-gray-500 text-xs">Bergabung sejak: {{ auth()->user()->created_at->format('d MMMM Y') }}</p>
+        <p class="text-gray-500 text-xs">Bergabung sejak: {{ auth()->user()->created_at->format('d M Y') }}</p>
     </div>
 
 </div>
