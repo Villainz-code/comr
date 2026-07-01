@@ -21,6 +21,7 @@
                     <th class="px-6 py-4 text-gray-500 text-xs font-semibold uppercase tracking-wider">Alamat</th>
                     <th class="px-6 py-4 text-gray-500 text-xs font-semibold uppercase tracking-wider">Total Order</th>
                     <th class="px-6 py-4 text-gray-500 text-xs font-semibold uppercase tracking-wider">Bergabung</th>
+                    <th class="px-6 py-4 text-gray-500 text-xs font-semibold uppercase tracking-wider">Aksi</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-800/50">
@@ -42,10 +43,19 @@
                         <span class="bg-gray-800 text-gray-300 text-xs px-2.5 py-1 rounded-full">{{ $user->orders_count }} pesanan</span>
                     </td>
                     <td class="px-6 py-4 text-gray-500 text-xs">{{ $user->created_at->format('d M Y') }}</td>
+                    <td class="px-6 py-4">
+                        <form action="{{ route('admin.users.destroy', $user) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus customer ini?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-red-400 hover:text-red-300 border border-red-900/50 hover:border-red-700 px-3 py-1.5 rounded text-xs transition-all">
+                                Hapus
+                            </button>
+                        </form>
+                    </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="7" class="px-6 py-16 text-center text-gray-500">Belum ada customer terdaftar</td>
+                    <td colspan="8" class="px-6 py-16 text-center text-gray-500">Belum ada customer terdaftar</td>
                 </tr>
                 @endforelse
             </tbody>
